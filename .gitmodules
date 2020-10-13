@@ -1,0 +1,3 @@
+[submodule "src/lib/sdl"]
+	path = src/lib/sdl
+	url = https://github.com/borodust/SDL-mirror.git
