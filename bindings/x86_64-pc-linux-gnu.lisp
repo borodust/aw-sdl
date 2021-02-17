@@ -730,12 +730,16 @@
 
 (cffi:defctype %sdl::event-filter (:pointer :pointer))
 
+(declaim (inline %sdl::add-event-watch))
+
 (cffi:defcfun ("SDL_AddEventWatch" %sdl::add-event-watch)
               :void
               (%sdl::filter %sdl::event-filter)
               (%sdl::userdata (:pointer :void)))
 
 (cffi:defctype %sdl::hint-callback (:pointer :pointer))
+
+(declaim (inline %sdl::add-hint-callback))
 
 (cffi:defcfun ("SDL_AddHintCallback" %sdl::add-hint-callback)
               :void
@@ -748,6 +752,8 @@
 (cffi:defctype %sdl::uint32 :unsigned-int)
 
 (cffi:defctype %sdl::timer-callback (:pointer :pointer))
+
+(declaim (inline %sdl::add-timer))
 
 (cffi:defcfun ("SDL_AddTimer" %sdl::add-timer)
               %sdl::timer-id
@@ -799,9 +805,13 @@
 
 (cffi:defctype %sdl::pixel-format (:struct %sdl::pixel-format))
 
+(declaim (inline %sdl::alloc-format))
+
 (cffi:defcfun ("SDL_AllocFormat" %sdl::alloc-format)
               (:pointer %sdl::pixel-format)
               (%sdl::pixel-format %sdl::uint32))
+
+(declaim (inline %sdl::alloc-palette))
 
 (cffi:defcfun ("SDL_AllocPalette" %sdl::alloc-palette)
               (:pointer %sdl::palette)
@@ -921,6 +931,8 @@
 
 (cffi:defctype %sdl::r-wops (:struct %sdl::r-wops))
 
+(declaim (inline %sdl::alloc-rw))
+
 (cffi:defcfun ("SDL_AllocRW" %sdl::alloc-rw) (:pointer %sdl::r-wops))
 
 (cffi:defcstruct (%sdl::|C:@SA@SDL-ATOMIC-T| :size 4)
@@ -928,10 +940,14 @@
 
 (cffi:defctype %sdl::atomic-t (:struct %sdl::|C:@SA@SDL-ATOMIC-T|))
 
+(declaim (inline %sdl::atomic-add))
+
 (cffi:defcfun ("SDL_AtomicAdd" %sdl::atomic-add)
               :int
               (%sdl::a (:pointer %sdl::atomic-t))
               (%sdl::v :int))
+
+(declaim (inline %sdl::atomic-cas))
 
 (cffi:defcfun ("SDL_AtomicCAS" %sdl::atomic-cas)
               %sdl::bool
@@ -939,15 +955,21 @@
               (%sdl::oldval :int)
               (%sdl::newval :int))
 
+(declaim (inline %sdl::atomic-cas-ptr))
+
 (cffi:defcfun ("SDL_AtomicCASPtr" %sdl::atomic-cas-ptr)
               %sdl::bool
               (%sdl::a (:pointer (:pointer :void)))
               (%sdl::oldval (:pointer :void))
               (%sdl::newval (:pointer :void)))
 
+(declaim (inline %sdl::atomic-get))
+
 (cffi:defcfun ("SDL_AtomicGet" %sdl::atomic-get)
               :int
               (%sdl::a (:pointer %sdl::atomic-t)))
+
+(declaim (inline %sdl::atomic-get-ptr))
 
 (cffi:defcfun ("SDL_AtomicGetPtr" %sdl::atomic-get-ptr)
               (:pointer :void)
@@ -955,31 +977,45 @@
 
 (cffi:defctype %sdl::spin-lock :int)
 
+(declaim (inline %sdl::atomic-lock))
+
 (cffi:defcfun ("SDL_AtomicLock" %sdl::atomic-lock)
               :void
               (%sdl::lock (:pointer %sdl::spin-lock)))
+
+(declaim (inline %sdl::atomic-set))
 
 (cffi:defcfun ("SDL_AtomicSet" %sdl::atomic-set)
               :int
               (%sdl::a (:pointer %sdl::atomic-t))
               (%sdl::v :int))
 
+(declaim (inline %sdl::atomic-set-ptr))
+
 (cffi:defcfun ("SDL_AtomicSetPtr" %sdl::atomic-set-ptr)
               (:pointer :void)
               (%sdl::a (:pointer (:pointer :void)))
               (%sdl::v (:pointer :void)))
 
+(declaim (inline %sdl::atomic-try-lock))
+
 (cffi:defcfun ("SDL_AtomicTryLock" %sdl::atomic-try-lock)
               %sdl::bool
               (%sdl::lock (:pointer %sdl::spin-lock)))
+
+(declaim (inline %sdl::atomic-unlock))
 
 (cffi:defcfun ("SDL_AtomicUnlock" %sdl::atomic-unlock)
               :void
               (%sdl::lock (:pointer %sdl::spin-lock)))
 
+(declaim (inline %sdl::audio-init))
+
 (cffi:defcfun ("SDL_AudioInit" %sdl::audio-init)
               :int
               (%sdl::driver-name claw-utils:claw-string))
+
+(declaim (inline %sdl::audio-quit))
 
 (cffi:defcfun ("SDL_AudioQuit" %sdl::audio-quit) :void)
 
@@ -987,24 +1023,34 @@
 
 (cffi:defctype %sdl::audio-stream (:struct %sdl::%sdl-audio-stream))
 
+(declaim (inline %sdl::audio-stream-available))
+
 (cffi:defcfun ("SDL_AudioStreamAvailable"
                %sdl::audio-stream-available)
               :int
               (%sdl::stream (:pointer %sdl::audio-stream)))
 
+(declaim (inline %sdl::audio-stream-clear))
+
 (cffi:defcfun ("SDL_AudioStreamClear" %sdl::audio-stream-clear)
               :void
               (%sdl::stream (:pointer %sdl::audio-stream)))
 
+(declaim (inline %sdl::audio-stream-flush))
+
 (cffi:defcfun ("SDL_AudioStreamFlush" %sdl::audio-stream-flush)
               :int
               (%sdl::stream (:pointer %sdl::audio-stream)))
+
+(declaim (inline %sdl::audio-stream-get))
 
 (cffi:defcfun ("SDL_AudioStreamGet" %sdl::audio-stream-get)
               :int
               (%sdl::stream (:pointer %sdl::audio-stream))
               (%sdl::buf (:pointer :void))
               (%sdl::len :int))
+
+(declaim (inline %sdl::audio-stream-put))
 
 (cffi:defcfun ("SDL_AudioStreamPut" %sdl::audio-stream-put)
               :int
@@ -1032,6 +1078,8 @@
 
 (cffi:defctype %sdl::audio-cvt (:struct %sdl::audio-cvt))
 
+(declaim (inline %sdl::build-audio-cvt))
+
 (cffi:defcfun ("SDL_BuildAudioCVT" %sdl::build-audio-cvt)
               :int
               (%sdl::cvt (:pointer %sdl::audio-cvt))
@@ -1044,26 +1092,40 @@
 
 (cffi:defctype %sdl::uint16 :unsigned-short)
 
+(declaim (inline %sdl::calculate-gamma-ramp))
+
 (cffi:defcfun ("SDL_CalculateGammaRamp" %sdl::calculate-gamma-ramp)
               :void
               (%sdl::gamma :float)
               (%sdl::ramp (:pointer %sdl::uint16)))
 
+(declaim (inline %sdl::capture-mouse))
+
 (cffi:defcfun ("SDL_CaptureMouse" %sdl::capture-mouse)
               :int
               (%sdl::enabled %sdl::bool))
 
+(declaim (inline %sdl::clear-error))
+
 (cffi:defcfun ("SDL_ClearError" %sdl::clear-error) :void)
+
+(declaim (inline %sdl::clear-hints))
 
 (cffi:defcfun ("SDL_ClearHints" %sdl::clear-hints) :void)
 
 (cffi:defctype %sdl::audio-device-id :unsigned-int)
 
+(declaim (inline %sdl::clear-queued-audio))
+
 (cffi:defcfun ("SDL_ClearQueuedAudio" %sdl::clear-queued-audio)
               :void
               (%sdl::dev %sdl::audio-device-id))
 
+(declaim (inline %sdl::close-audio))
+
 (cffi:defcfun ("SDL_CloseAudio" %sdl::close-audio) :void)
+
+(declaim (inline %sdl::close-audio-device))
 
 (cffi:defcfun ("SDL_CloseAudioDevice" %sdl::close-audio-device)
               :void
@@ -1106,6 +1168,8 @@
 (cffi:defctype %sdl::blend-operation
                %sdl::|C:@EA@SDL-BLEND-OPERATION|)
 
+(declaim (inline %sdl::compose-custom-blend-mode))
+
 (cffi:defcfun ("SDL_ComposeCustomBlendMode"
                %sdl::compose-custom-blend-mode)
               %sdl::blend-mode
@@ -1120,9 +1184,13 @@
 
 (cffi:defctype %sdl::cond (:struct %sdl::cond))
 
+(declaim (inline %sdl::cond-broadcast))
+
 (cffi:defcfun ("SDL_CondBroadcast" %sdl::cond-broadcast)
               :int
               (%sdl::cond (:pointer %sdl::cond)))
+
+(declaim (inline %sdl::cond-signal))
 
 (cffi:defcfun ("SDL_CondSignal" %sdl::cond-signal)
               :int
@@ -1132,10 +1200,14 @@
 
 (cffi:defctype %sdl::mutex (:struct %sdl::mutex))
 
+(declaim (inline %sdl::cond-wait))
+
 (cffi:defcfun ("SDL_CondWait" %sdl::cond-wait)
               :int
               (%sdl::cond (:pointer %sdl::cond))
               (%sdl::mutex (:pointer %sdl::mutex)))
+
+(declaim (inline %sdl::cond-wait-timeout))
 
 (cffi:defcfun ("SDL_CondWaitTimeout" %sdl::cond-wait-timeout)
               :int
@@ -1143,9 +1215,13 @@
               (%sdl::mutex (:pointer %sdl::mutex))
               (%sdl::ms %sdl::uint32))
 
+(declaim (inline %sdl::convert-audio))
+
 (cffi:defcfun ("SDL_ConvertAudio" %sdl::convert-audio)
               :int
               (%sdl::cvt (:pointer %sdl::audio-cvt)))
+
+(declaim (inline %sdl::convert-pixels))
 
 (cffi:defcfun ("SDL_ConvertPixels" %sdl::convert-pixels)
               :int
@@ -1186,11 +1262,15 @@
 
 (cffi:defctype %sdl::surface (:struct %sdl::surface))
 
+(declaim (inline %sdl::convert-surface))
+
 (cffi:defcfun ("SDL_ConvertSurface" %sdl::convert-surface)
               (:pointer %sdl::surface)
               (%sdl::src (:pointer %sdl::surface))
               (%sdl::fmt (:pointer %sdl::pixel-format))
               (%sdl::flags %sdl::uint32))
+
+(declaim (inline %sdl::convert-surface-format))
 
 (cffi:defcfun ("SDL_ConvertSurfaceFormat"
                %sdl::convert-surface-format)
@@ -1203,14 +1283,20 @@
 
 (cffi:defctype %sdl::cursor (:struct %sdl::cursor))
 
+(declaim (inline %sdl::create-color-cursor))
+
 (cffi:defcfun ("SDL_CreateColorCursor" %sdl::create-color-cursor)
               (:pointer %sdl::cursor)
               (%sdl::surface (:pointer %sdl::surface))
               (%sdl::hot-x :int)
               (%sdl::hot-y :int))
 
+(declaim (inline %sdl::create-cond))
+
 (cffi:defcfun ("SDL_CreateCond" %sdl::create-cond)
               (:pointer %sdl::cond))
+
+(declaim (inline %sdl::create-cursor))
 
 (cffi:defcfun ("SDL_CreateCursor" %sdl::create-cursor)
               (:pointer %sdl::cursor)
@@ -1221,8 +1307,12 @@
               (%sdl::hot-x :int)
               (%sdl::hot-y :int))
 
+(declaim (inline %sdl::create-mutex))
+
 (cffi:defcfun ("SDL_CreateMutex" %sdl::create-mutex)
               (:pointer %sdl::mutex))
+
+(declaim (inline %sdl::create-rgb-surface))
 
 (cffi:defcfun ("SDL_CreateRGBSurface" %sdl::create-rgb-surface)
               (:pointer %sdl::surface)
@@ -1234,6 +1324,8 @@
               (%sdl::gmask %sdl::uint32)
               (%sdl::bmask %sdl::uint32)
               (%sdl::amask %sdl::uint32))
+
+(declaim (inline %sdl::create-rgb-surface-from))
 
 (cffi:defcfun ("SDL_CreateRGBSurfaceFrom"
                %sdl::create-rgb-surface-from)
@@ -1248,6 +1340,8 @@
               (%sdl::bmask %sdl::uint32)
               (%sdl::amask %sdl::uint32))
 
+(declaim (inline %sdl::create-rgb-surface-with-format))
+
 (cffi:defcfun ("SDL_CreateRGBSurfaceWithFormat"
                %sdl::create-rgb-surface-with-format)
               (:pointer %sdl::surface)
@@ -1256,6 +1350,8 @@
               (%sdl::height :int)
               (%sdl::depth :int)
               (%sdl::format %sdl::uint32))
+
+(declaim (inline %sdl::create-rgb-surface-with-format-from))
 
 (cffi:defcfun ("SDL_CreateRGBSurfaceWithFormatFrom"
                %sdl::create-rgb-surface-with-format-from)
@@ -1275,6 +1371,8 @@
 
 (cffi:defctype %sdl::window (:struct %sdl::window))
 
+(declaim (inline %sdl::create-renderer))
+
 (cffi:defcfun ("SDL_CreateRenderer" %sdl::create-renderer)
               (:pointer %sdl::renderer)
               (%sdl::window (:pointer %sdl::window))
@@ -1285,9 +1383,13 @@
 
 (cffi:defctype %sdl::sem (:struct %sdl::semaphore))
 
+(declaim (inline %sdl::create-semaphore))
+
 (cffi:defcfun ("SDL_CreateSemaphore" %sdl::create-semaphore)
               (:pointer %sdl::sem)
               (%sdl::initial-value %sdl::uint32))
+
+(declaim (inline %sdl::create-shaped-window))
 
 (cffi:defcfun ("SDL_CreateShapedWindow" %sdl::create-shaped-window)
               (:pointer %sdl::window)
@@ -1297,6 +1399,8 @@
               (%sdl::w :unsigned-int)
               (%sdl::h :unsigned-int)
               (%sdl::flags %sdl::uint32))
+
+(declaim (inline %sdl::create-software-renderer))
 
 (cffi:defcfun ("SDL_CreateSoftwareRenderer"
                %sdl::create-software-renderer)
@@ -1321,6 +1425,8 @@
 
 (cffi:defctype %sdl::system-cursor %sdl::|C:@EA@SDL-SYSTEM-CURSOR|)
 
+(declaim (inline %sdl::create-system-cursor))
+
 (cffi:defcfun ("SDL_CreateSystemCursor" %sdl::create-system-cursor)
               (:pointer %sdl::cursor)
               (%sdl::id %sdl::system-cursor))
@@ -1329,6 +1435,8 @@
 
 (cffi:defctype %sdl::texture (:struct %sdl::texture))
 
+(declaim (inline %sdl::create-texture))
+
 (cffi:defcfun ("SDL_CreateTexture" %sdl::create-texture)
               (:pointer %sdl::texture)
               (%sdl::renderer (:pointer %sdl::renderer))
@@ -1336,6 +1444,8 @@
               (%sdl::access :int)
               (%sdl::w :int)
               (%sdl::h :int))
+
+(declaim (inline %sdl::create-texture-from-surface))
 
 (cffi:defcfun ("SDL_CreateTextureFromSurface"
                %sdl::create-texture-from-surface)
@@ -1349,11 +1459,15 @@
 
 (cffi:defctype %sdl::thread-function (:pointer :pointer))
 
+(declaim (inline %sdl::create-thread))
+
 (cffi:defcfun ("SDL_CreateThread" %sdl::create-thread)
               (:pointer %sdl::thread)
               (%sdl::fn %sdl::thread-function)
               (%sdl::name claw-utils:claw-string)
               (%sdl::data (:pointer :void)))
+
+(declaim (inline %sdl::create-thread-with-stack-size))
 
 (cffi:defcfun ("SDL_CreateThreadWithStackSize"
                %sdl::create-thread-with-stack-size)
@@ -1362,6 +1476,8 @@
               (%sdl::name claw-utils:claw-string)
               (%sdl::stacksize %sdl::size-t)
               (%sdl::data (:pointer :void)))
+
+(declaim (inline %sdl::create-window))
 
 (cffi:defcfun ("SDL_CreateWindow" %sdl::create-window)
               (:pointer %sdl::window)
@@ -1372,6 +1488,8 @@
               (%sdl::h :int)
               (%sdl::flags %sdl::uint32))
 
+(declaim (inline %sdl::create-window-and-renderer))
+
 (cffi:defcfun ("SDL_CreateWindowAndRenderer"
                %sdl::create-window-and-renderer)
               :int
@@ -1381,14 +1499,20 @@
               (%sdl::window (:pointer (:pointer %sdl::window)))
               (%sdl::renderer (:pointer (:pointer %sdl::renderer))))
 
+(declaim (inline %sdl::create-window-from))
+
 (cffi:defcfun ("SDL_CreateWindowFrom" %sdl::create-window-from)
               (:pointer %sdl::window)
               (%sdl::data (:pointer :void)))
+
+(declaim (inline %sdl::del-event-watch))
 
 (cffi:defcfun ("SDL_DelEventWatch" %sdl::del-event-watch)
               :void
               (%sdl::filter %sdl::event-filter)
               (%sdl::userdata (:pointer :void)))
+
+(declaim (inline %sdl::del-hint-callback))
 
 (cffi:defcfun ("SDL_DelHintCallback" %sdl::del-hint-callback)
               :void
@@ -1396,7 +1520,11 @@
               (%sdl::callback %sdl::hint-callback)
               (%sdl::userdata (:pointer :void)))
 
+(declaim (inline %sdl::delay))
+
 (cffi:defcfun ("SDL_Delay" %sdl::delay) :void (%sdl::ms %sdl::uint32))
+
+(declaim (inline %sdl::dequeue-audio))
 
 (cffi:defcfun ("SDL_DequeueAudio" %sdl::dequeue-audio)
               %sdl::uint32
@@ -1404,40 +1532,60 @@
               (%sdl::data (:pointer :void))
               (%sdl::len %sdl::uint32))
 
+(declaim (inline %sdl::destroy-cond))
+
 (cffi:defcfun ("SDL_DestroyCond" %sdl::destroy-cond)
               :void
               (%sdl::cond (:pointer %sdl::cond)))
+
+(declaim (inline %sdl::destroy-mutex))
 
 (cffi:defcfun ("SDL_DestroyMutex" %sdl::destroy-mutex)
               :void
               (%sdl::mutex (:pointer %sdl::mutex)))
 
+(declaim (inline %sdl::destroy-renderer))
+
 (cffi:defcfun ("SDL_DestroyRenderer" %sdl::destroy-renderer)
               :void
               (%sdl::renderer (:pointer %sdl::renderer)))
+
+(declaim (inline %sdl::destroy-semaphore))
 
 (cffi:defcfun ("SDL_DestroySemaphore" %sdl::destroy-semaphore)
               :void
               (%sdl::sem (:pointer %sdl::sem)))
 
+(declaim (inline %sdl::destroy-texture))
+
 (cffi:defcfun ("SDL_DestroyTexture" %sdl::destroy-texture)
               :void
               (%sdl::texture (:pointer %sdl::texture)))
+
+(declaim (inline %sdl::destroy-window))
 
 (cffi:defcfun ("SDL_DestroyWindow" %sdl::destroy-window)
               :void
               (%sdl::window (:pointer %sdl::window)))
 
+(declaim (inline %sdl::detach-thread))
+
 (cffi:defcfun ("SDL_DetachThread" %sdl::detach-thread)
               :void
               (%sdl::thread (:pointer %sdl::thread)))
 
+(declaim (inline %sdl::disable-screen-saver))
+
 (cffi:defcfun ("SDL_DisableScreenSaver" %sdl::disable-screen-saver)
               :void)
+
+(declaim (inline %sdl::duplicate-surface))
 
 (cffi:defcfun ("SDL_DuplicateSurface" %sdl::duplicate-surface)
               (:pointer %sdl::surface)
               (%sdl::surface (:pointer %sdl::surface)))
+
+(declaim (inline %sdl::enable-screen-saver))
 
 (cffi:defcfun ("SDL_EnableScreenSaver" %sdl::enable-screen-saver)
               :void)
@@ -1447,6 +1595,8 @@
                  (%sdl::y :int :offset 4))
 
 (cffi:defctype %sdl::point (:struct %sdl::point))
+
+(declaim (inline %sdl::enclose-points))
 
 (cffi:defcfun ("SDL_EnclosePoints" %sdl::enclose-points)
               %sdl::bool
@@ -1466,20 +1616,28 @@
 
 (cffi:defctype %sdl::errorcode %sdl::|C:@EA@SDL-ERRORCODE|)
 
+(declaim (inline %sdl::error))
+
 (cffi:defcfun ("SDL_Error" %sdl::error)
               :int
               (%sdl::code %sdl::errorcode))
+
+(declaim (inline %sdl::event-state))
 
 (cffi:defcfun ("SDL_EventState" %sdl::event-state)
               %sdl::uint8
               (%sdl::type %sdl::uint32)
               (%sdl::state :int))
 
+(declaim (inline %sdl::fill-rect))
+
 (cffi:defcfun ("SDL_FillRect" %sdl::fill-rect)
               :int
               (%sdl::dst (:pointer %sdl::surface))
               (%sdl::rect (:pointer %sdl::rect))
               (%sdl::color %sdl::uint32))
+
+(declaim (inline %sdl::fill-rects))
 
 (cffi:defcfun ("SDL_FillRects" %sdl::fill-rects)
               :int
@@ -1488,47 +1646,69 @@
               (%sdl::count :int)
               (%sdl::color %sdl::uint32))
 
+(declaim (inline %sdl::filter-events))
+
 (cffi:defcfun ("SDL_FilterEvents" %sdl::filter-events)
               :void
               (%sdl::filter %sdl::event-filter)
               (%sdl::userdata (:pointer :void)))
 
+(declaim (inline %sdl::flush-event))
+
 (cffi:defcfun ("SDL_FlushEvent" %sdl::flush-event)
               :void
               (%sdl::type %sdl::uint32))
+
+(declaim (inline %sdl::flush-events))
 
 (cffi:defcfun ("SDL_FlushEvents" %sdl::flush-events)
               :void
               (%sdl::min-type %sdl::uint32)
               (%sdl::max-type %sdl::uint32))
 
+(declaim (inline %sdl::free-audio-stream))
+
 (cffi:defcfun ("SDL_FreeAudioStream" %sdl::free-audio-stream)
               :void
               (%sdl::stream (:pointer %sdl::audio-stream)))
+
+(declaim (inline %sdl::free-cursor))
 
 (cffi:defcfun ("SDL_FreeCursor" %sdl::free-cursor)
               :void
               (%sdl::cursor (:pointer %sdl::cursor)))
 
+(declaim (inline %sdl::free-format))
+
 (cffi:defcfun ("SDL_FreeFormat" %sdl::free-format)
               :void
               (%sdl::format (:pointer %sdl::pixel-format)))
+
+(declaim (inline %sdl::free-palette))
 
 (cffi:defcfun ("SDL_FreePalette" %sdl::free-palette)
               :void
               (%sdl::palette (:pointer %sdl::palette)))
 
+(declaim (inline %sdl::free-rw))
+
 (cffi:defcfun ("SDL_FreeRW" %sdl::free-rw)
               :void
               (%sdl::area (:pointer %sdl::r-wops)))
+
+(declaim (inline %sdl::free-surface))
 
 (cffi:defcfun ("SDL_FreeSurface" %sdl::free-surface)
               :void
               (%sdl::surface (:pointer %sdl::surface)))
 
+(declaim (inline %sdl::free-wav))
+
 (cffi:defcfun ("SDL_FreeWAV" %sdl::free-wav)
               :void
               (%sdl::audio-buf (:pointer %sdl::uint8)))
+
+(declaim (inline %sdl::gl-bind-texture))
 
 (cffi:defcfun ("SDL_GL_BindTexture" %sdl::gl-bind-texture)
               :int
@@ -1538,13 +1718,19 @@
 
 (cffi:defctype %sdl::gl-context (:pointer :void))
 
+(declaim (inline %sdl::gl-create-context))
+
 (cffi:defcfun ("SDL_GL_CreateContext" %sdl::gl-create-context)
               %sdl::gl-context
               (%sdl::window (:pointer %sdl::window)))
 
+(declaim (inline %sdl::gl-delete-context))
+
 (cffi:defcfun ("SDL_GL_DeleteContext" %sdl::gl-delete-context)
               :void
               (%sdl::context %sdl::gl-context))
+
+(declaim (inline %sdl::gl-extension-supported))
 
 (cffi:defcfun ("SDL_GL_ExtensionSupported"
                %sdl::gl-extension-supported)
@@ -1583,17 +1769,25 @@
 
 (cffi:defctype %sdl::g-lattr %sdl::|C:@EA@SDL-G-LATTR|)
 
+(declaim (inline %sdl::gl-get-attribute))
+
 (cffi:defcfun ("SDL_GL_GetAttribute" %sdl::gl-get-attribute)
               :int
               (%sdl::attr %sdl::g-lattr)
               (%sdl::value (:pointer :int)))
 
+(declaim (inline %sdl::gl-get-current-context))
+
 (cffi:defcfun ("SDL_GL_GetCurrentContext"
                %sdl::gl-get-current-context)
               %sdl::gl-context)
 
+(declaim (inline %sdl::gl-get-current-window))
+
 (cffi:defcfun ("SDL_GL_GetCurrentWindow" %sdl::gl-get-current-window)
               (:pointer %sdl::window))
+
+(declaim (inline %sdl::gl-get-drawable-size))
 
 (cffi:defcfun ("SDL_GL_GetDrawableSize" %sdl::gl-get-drawable-size)
               :void
@@ -1601,48 +1795,72 @@
               (%sdl::w (:pointer :int))
               (%sdl::h (:pointer :int)))
 
+(declaim (inline %sdl::gl-get-proc-address))
+
 (cffi:defcfun ("SDL_GL_GetProcAddress" %sdl::gl-get-proc-address)
               (:pointer :void)
               (%sdl::proc claw-utils:claw-string))
 
+(declaim (inline %sdl::gl-get-swap-interval))
+
 (cffi:defcfun ("SDL_GL_GetSwapInterval" %sdl::gl-get-swap-interval)
               :int)
+
+(declaim (inline %sdl::gl-load-library))
 
 (cffi:defcfun ("SDL_GL_LoadLibrary" %sdl::gl-load-library)
               :int
               (%sdl::path claw-utils:claw-string))
+
+(declaim (inline %sdl::gl-make-current))
 
 (cffi:defcfun ("SDL_GL_MakeCurrent" %sdl::gl-make-current)
               :int
               (%sdl::window (:pointer %sdl::window))
               (%sdl::context %sdl::gl-context))
 
+(declaim (inline %sdl::gl-reset-attributes))
+
 (cffi:defcfun ("SDL_GL_ResetAttributes" %sdl::gl-reset-attributes)
               :void)
+
+(declaim (inline %sdl::gl-set-attribute))
 
 (cffi:defcfun ("SDL_GL_SetAttribute" %sdl::gl-set-attribute)
               :int
               (%sdl::attr %sdl::g-lattr)
               (%sdl::value :int))
 
+(declaim (inline %sdl::gl-set-swap-interval))
+
 (cffi:defcfun ("SDL_GL_SetSwapInterval" %sdl::gl-set-swap-interval)
               :int
               (%sdl::interval :int))
+
+(declaim (inline %sdl::gl-swap-window))
 
 (cffi:defcfun ("SDL_GL_SwapWindow" %sdl::gl-swap-window)
               :void
               (%sdl::window (:pointer %sdl::window)))
 
+(declaim (inline %sdl::gl-unbind-texture))
+
 (cffi:defcfun ("SDL_GL_UnbindTexture" %sdl::gl-unbind-texture)
               :int
               (%sdl::texture (:pointer %sdl::texture)))
 
+(declaim (inline %sdl::gl-unload-library))
+
 (cffi:defcfun ("SDL_GL_UnloadLibrary" %sdl::gl-unload-library) :void)
+
+(declaim (inline %sdl::game-controller-add-mapping))
 
 (cffi:defcfun ("SDL_GameControllerAddMapping"
                %sdl::game-controller-add-mapping)
               :int
               (%sdl::mapping-string claw-utils:claw-string))
+
+(declaim (inline %sdl::game-controller-add-mappings-from-rw))
 
 (cffi:defcfun ("SDL_GameControllerAddMappingsFromRW"
                %sdl::game-controller-add-mappings-from-rw)
@@ -1655,9 +1873,13 @@
 (cffi:defctype %sdl::game-controller
                (:struct %sdl::%sdl-game-controller))
 
+(declaim (inline %sdl::game-controller-close))
+
 (cffi:defcfun ("SDL_GameControllerClose" %sdl::game-controller-close)
               :void
               (%sdl::gamecontroller (:pointer %sdl::game-controller)))
+
+(declaim (inline %sdl::game-controller-event-state))
 
 (cffi:defcfun ("SDL_GameControllerEventState"
                %sdl::game-controller-event-state)
@@ -1666,15 +1888,21 @@
 
 (cffi:defctype %sdl::joystick-id :int)
 
+(declaim (inline %sdl::game-controller-from-instance-id))
+
 (cffi:defcfun ("SDL_GameControllerFromInstanceID"
                %sdl::game-controller-from-instance-id)
               (:pointer %sdl::game-controller)
               (%sdl::joyid %sdl::joystick-id))
 
+(declaim (inline %sdl::game-controller-from-player-index))
+
 (cffi:defcfun ("SDL_GameControllerFromPlayerIndex"
                %sdl::game-controller-from-player-index)
               (:pointer %sdl::game-controller)
               (%sdl::player-index :int))
+
+(declaim (inline %sdl::game-controller-get-attached))
 
 (cffi:defcfun ("SDL_GameControllerGetAttached"
                %sdl::game-controller-get-attached)
@@ -1697,11 +1925,15 @@
 (cffi:defctype %sdl::game-controller-axis
                %sdl::|C:@EA@SDL-GAME-CONTROLLER-AXIS|)
 
+(declaim (inline %sdl::game-controller-get-axis))
+
 (cffi:defcfun ("SDL_GameControllerGetAxis"
                %sdl::game-controller-get-axis)
               %sdl::sint16
               (%sdl::gamecontroller (:pointer %sdl::game-controller))
               (%sdl::axis %sdl::game-controller-axis))
+
+(declaim (inline %sdl::game-controller-get-axis-from-string))
 
 (cffi:defcfun ("SDL_GameControllerGetAxisFromString"
                %sdl::game-controller-get-axis-from-string)
@@ -1743,6 +1975,8 @@
 (cffi:defctype %sdl::game-controller-button-bind
                (:struct %sdl::game-controller-button-bind))
 
+(declaim (inline %sdl::game-controller-get-bind-for-axis))
+
 (cffi:defcfun ("__claw_SDL_GameControllerGetBindForAxis"
                %sdl::game-controller-get-bind-for-axis)
               (:pointer %sdl::game-controller-button-bind)
@@ -1780,6 +2014,8 @@
 (cffi:defctype %sdl::game-controller-button
                %sdl::|C:@EA@SDL-GAME-CONTROLLER-BUTTON|)
 
+(declaim (inline %sdl::game-controller-get-bind-for-button))
+
 (cffi:defcfun ("__claw_SDL_GameControllerGetBindForButton"
                %sdl::game-controller-get-bind-for-button)
               (:pointer %sdl::game-controller-button-bind)
@@ -1788,11 +2024,15 @@
               (%sdl::gamecontroller (:pointer %sdl::game-controller))
               (%sdl::button %sdl::game-controller-button))
 
+(declaim (inline %sdl::game-controller-get-button))
+
 (cffi:defcfun ("SDL_GameControllerGetButton"
                %sdl::game-controller-get-button)
               %sdl::uint8
               (%sdl::gamecontroller (:pointer %sdl::game-controller))
               (%sdl::button %sdl::game-controller-button))
+
+(declaim (inline %sdl::game-controller-get-button-from-string))
 
 (cffi:defcfun ("SDL_GameControllerGetButtonFromString"
                %sdl::game-controller-get-button-from-string)
@@ -1803,10 +2043,14 @@
 
 (cffi:defctype %sdl::joystick (:struct %sdl::%sdl-joystick))
 
+(declaim (inline %sdl::game-controller-get-joystick))
+
 (cffi:defcfun ("SDL_GameControllerGetJoystick"
                %sdl::game-controller-get-joystick)
               (:pointer %sdl::joystick)
               (%sdl::gamecontroller (:pointer %sdl::game-controller)))
+
+(declaim (inline %sdl::game-controller-get-num-touchpad-fingers))
 
 (cffi:defcfun ("SDL_GameControllerGetNumTouchpadFingers"
                %sdl::game-controller-get-num-touchpad-fingers)
@@ -1814,20 +2058,28 @@
               (%sdl::gamecontroller (:pointer %sdl::game-controller))
               (%sdl::touchpad :int))
 
+(declaim (inline %sdl::game-controller-get-num-touchpads))
+
 (cffi:defcfun ("SDL_GameControllerGetNumTouchpads"
                %sdl::game-controller-get-num-touchpads)
               :int
               (%sdl::gamecontroller (:pointer %sdl::game-controller)))
+
+(declaim (inline %sdl::game-controller-get-player-index))
 
 (cffi:defcfun ("SDL_GameControllerGetPlayerIndex"
                %sdl::game-controller-get-player-index)
               :int
               (%sdl::gamecontroller (:pointer %sdl::game-controller)))
 
+(declaim (inline %sdl::game-controller-get-product))
+
 (cffi:defcfun ("SDL_GameControllerGetProduct"
                %sdl::game-controller-get-product)
               %sdl::uint16
               (%sdl::gamecontroller (:pointer %sdl::game-controller)))
+
+(declaim (inline %sdl::game-controller-get-product-version))
 
 (cffi:defcfun ("SDL_GameControllerGetProductVersion"
                %sdl::game-controller-get-product-version)
@@ -1843,6 +2095,8 @@
 
 (cffi:defctype %sdl::sensor-type %sdl::|C:@EA@SDL-SENSOR-TYPE|)
 
+(declaim (inline %sdl::game-controller-get-sensor-data))
+
 (cffi:defcfun ("SDL_GameControllerGetSensorData"
                %sdl::game-controller-get-sensor-data)
               :int
@@ -1851,20 +2105,28 @@
               (%sdl::data (:pointer :float))
               (%sdl::num-values :int))
 
+(declaim (inline %sdl::game-controller-get-serial))
+
 (cffi:defcfun ("SDL_GameControllerGetSerial"
                %sdl::game-controller-get-serial)
               claw-utils:claw-string
               (%sdl::gamecontroller (:pointer %sdl::game-controller)))
+
+(declaim (inline %sdl::game-controller-get-string-for-axis))
 
 (cffi:defcfun ("SDL_GameControllerGetStringForAxis"
                %sdl::game-controller-get-string-for-axis)
               claw-utils:claw-string
               (%sdl::axis %sdl::game-controller-axis))
 
+(declaim (inline %sdl::game-controller-get-string-for-button))
+
 (cffi:defcfun ("SDL_GameControllerGetStringForButton"
                %sdl::game-controller-get-string-for-button)
               claw-utils:claw-string
               (%sdl::button %sdl::game-controller-button))
+
+(declaim (inline %sdl::game-controller-get-touchpad-finger))
 
 (cffi:defcfun ("SDL_GameControllerGetTouchpadFinger"
                %sdl::game-controller-get-touchpad-finger)
@@ -1891,15 +2153,21 @@
 (cffi:defctype %sdl::game-controller-type
                %sdl::|C:@EA@SDL-GAME-CONTROLLER-TYPE|)
 
+(declaim (inline %sdl::game-controller-get-type))
+
 (cffi:defcfun ("SDL_GameControllerGetType"
                %sdl::game-controller-get-type)
               %sdl::game-controller-type
               (%sdl::gamecontroller (:pointer %sdl::game-controller)))
 
+(declaim (inline %sdl::game-controller-get-vendor))
+
 (cffi:defcfun ("SDL_GameControllerGetVendor"
                %sdl::game-controller-get-vendor)
               %sdl::uint16
               (%sdl::gamecontroller (:pointer %sdl::game-controller)))
+
+(declaim (inline %sdl::game-controller-has-axis))
 
 (cffi:defcfun ("SDL_GameControllerHasAxis"
                %sdl::game-controller-has-axis)
@@ -1907,16 +2175,22 @@
               (%sdl::gamecontroller (:pointer %sdl::game-controller))
               (%sdl::axis %sdl::game-controller-axis))
 
+(declaim (inline %sdl::game-controller-has-button))
+
 (cffi:defcfun ("SDL_GameControllerHasButton"
                %sdl::game-controller-has-button)
               %sdl::bool
               (%sdl::gamecontroller (:pointer %sdl::game-controller))
               (%sdl::button %sdl::game-controller-button))
 
+(declaim (inline %sdl::game-controller-has-led))
+
 (cffi:defcfun ("SDL_GameControllerHasLED"
                %sdl::game-controller-has-led)
               %sdl::bool
               (%sdl::gamecontroller (:pointer %sdl::game-controller)))
+
+(declaim (inline %sdl::game-controller-has-sensor))
 
 (cffi:defcfun ("SDL_GameControllerHasSensor"
                %sdl::game-controller-has-sensor)
@@ -1924,16 +2198,22 @@
               (%sdl::gamecontroller (:pointer %sdl::game-controller))
               (%sdl::type %sdl::sensor-type))
 
+(declaim (inline %sdl::game-controller-is-sensor-enabled))
+
 (cffi:defcfun ("SDL_GameControllerIsSensorEnabled"
                %sdl::game-controller-is-sensor-enabled)
               %sdl::bool
               (%sdl::gamecontroller (:pointer %sdl::game-controller))
               (%sdl::type %sdl::sensor-type))
 
+(declaim (inline %sdl::game-controller-mapping))
+
 (cffi:defcfun ("SDL_GameControllerMapping"
                %sdl::game-controller-mapping)
               claw-utils:claw-string
               (%sdl::gamecontroller (:pointer %sdl::game-controller)))
+
+(declaim (inline %sdl::game-controller-mapping-for-device-index))
 
 (cffi:defcfun ("SDL_GameControllerMappingForDeviceIndex"
                %sdl::game-controller-mapping-for-device-index)
@@ -1946,32 +2226,46 @@
 (cffi:defctype %sdl::joystick-guid
                (:struct %sdl::|C:@SA@SDL-JOYSTICK-GUID|))
 
+(declaim (inline %sdl::game-controller-mapping-for-guid))
+
 (cffi:defcfun ("__claw_SDL_GameControllerMappingForGUID"
                %sdl::game-controller-mapping-for-guid)
               claw-utils:claw-string
               (%sdl::guid (:pointer %sdl::joystick-guid)))
+
+(declaim (inline %sdl::game-controller-mapping-for-index))
 
 (cffi:defcfun ("SDL_GameControllerMappingForIndex"
                %sdl::game-controller-mapping-for-index)
               claw-utils:claw-string
               (%sdl::mapping-index :int))
 
+(declaim (inline %sdl::game-controller-name))
+
 (cffi:defcfun ("SDL_GameControllerName" %sdl::game-controller-name)
               claw-utils:claw-string
               (%sdl::gamecontroller (:pointer %sdl::game-controller)))
+
+(declaim (inline %sdl::game-controller-name-for-index))
 
 (cffi:defcfun ("SDL_GameControllerNameForIndex"
                %sdl::game-controller-name-for-index)
               claw-utils:claw-string
               (%sdl::joystick-index :int))
 
+(declaim (inline %sdl::game-controller-num-mappings))
+
 (cffi:defcfun ("SDL_GameControllerNumMappings"
                %sdl::game-controller-num-mappings)
               :int)
 
+(declaim (inline %sdl::game-controller-open))
+
 (cffi:defcfun ("SDL_GameControllerOpen" %sdl::game-controller-open)
               (:pointer %sdl::game-controller)
               (%sdl::joystick-index :int))
+
+(declaim (inline %sdl::game-controller-rumble))
 
 (cffi:defcfun ("SDL_GameControllerRumble"
                %sdl::game-controller-rumble)
@@ -1981,6 +2275,8 @@
               (%sdl::high-frequency-rumble %sdl::uint16)
               (%sdl::duration-ms %sdl::uint32))
 
+(declaim (inline %sdl::game-controller-rumble-triggers))
+
 (cffi:defcfun ("SDL_GameControllerRumbleTriggers"
                %sdl::game-controller-rumble-triggers)
               :int
@@ -1988,6 +2284,8 @@
               (%sdl::left-rumble %sdl::uint16)
               (%sdl::right-rumble %sdl::uint16)
               (%sdl::duration-ms %sdl::uint32))
+
+(declaim (inline %sdl::game-controller-set-led))
 
 (cffi:defcfun ("SDL_GameControllerSetLED"
                %sdl::game-controller-set-led)
@@ -1997,11 +2295,15 @@
               (%sdl::green %sdl::uint8)
               (%sdl::blue %sdl::uint8))
 
+(declaim (inline %sdl::game-controller-set-player-index))
+
 (cffi:defcfun ("SDL_GameControllerSetPlayerIndex"
                %sdl::game-controller-set-player-index)
               :void
               (%sdl::gamecontroller (:pointer %sdl::game-controller))
               (%sdl::player-index :int))
+
+(declaim (inline %sdl::game-controller-set-sensor-enabled))
 
 (cffi:defcfun ("SDL_GameControllerSetSensorEnabled"
                %sdl::game-controller-set-sensor-enabled)
@@ -2010,16 +2312,22 @@
               (%sdl::type %sdl::sensor-type)
               (%sdl::enabled %sdl::bool))
 
+(declaim (inline %sdl::game-controller-type-for-index))
+
 (cffi:defcfun ("SDL_GameControllerTypeForIndex"
                %sdl::game-controller-type-for-index)
               %sdl::game-controller-type
               (%sdl::joystick-index :int))
+
+(declaim (inline %sdl::game-controller-update))
 
 (cffi:defcfun ("SDL_GameControllerUpdate"
                %sdl::game-controller-update)
               :void)
 
 (cffi:defctype %sdl::assertion-handler (:pointer :pointer))
+
+(declaim (inline %sdl::get-assertion-handler))
 
 (cffi:defcfun ("SDL_GetAssertionHandler" %sdl::get-assertion-handler)
               %sdl::assertion-handler
@@ -2039,8 +2347,12 @@
 
 (cffi:defctype %sdl::assert-data (:struct %sdl::assert-data))
 
+(declaim (inline %sdl::get-assertion-report))
+
 (cffi:defcfun ("SDL_GetAssertionReport" %sdl::get-assertion-report)
               (:pointer %sdl::assert-data))
+
+(declaim (inline %sdl::get-audio-device-name))
 
 (cffi:defcfun ("SDL_GetAudioDeviceName" %sdl::get-audio-device-name)
               claw-utils:claw-string
@@ -2055,31 +2367,47 @@
 
 (cffi:defctype %sdl::audio-status %sdl::|C:@EA@SDL-AUDIO-STATUS|)
 
+(declaim (inline %sdl::get-audio-device-status))
+
 (cffi:defcfun ("SDL_GetAudioDeviceStatus"
                %sdl::get-audio-device-status)
               %sdl::audio-status
               (%sdl::dev %sdl::audio-device-id))
 
+(declaim (inline %sdl::get-audio-driver))
+
 (cffi:defcfun ("SDL_GetAudioDriver" %sdl::get-audio-driver)
               claw-utils:claw-string
               (%sdl::index :int))
 
+(declaim (inline %sdl::get-audio-status))
+
 (cffi:defcfun ("SDL_GetAudioStatus" %sdl::get-audio-status)
               %sdl::audio-status)
 
+(declaim (inline %sdl::get-base-path))
+
 (cffi:defcfun ("SDL_GetBasePath" %sdl::get-base-path)
               claw-utils:claw-string)
+
+(declaim (inline %sdl::get-cpu-cache-line-size))
 
 (cffi:defcfun ("SDL_GetCPUCacheLineSize"
                %sdl::get-cpu-cache-line-size)
               :int)
 
+(declaim (inline %sdl::get-cpu-count))
+
 (cffi:defcfun ("SDL_GetCPUCount" %sdl::get-cpu-count) :int)
+
+(declaim (inline %sdl::get-clip-rect))
 
 (cffi:defcfun ("SDL_GetClipRect" %sdl::get-clip-rect)
               :void
               (%sdl::surface (:pointer %sdl::surface))
               (%sdl::rect (:pointer %sdl::rect)))
+
+(declaim (inline %sdl::get-clipboard-text))
 
 (cffi:defcfun ("SDL_GetClipboardText" %sdl::get-clipboard-text)
               claw-utils:claw-string)
@@ -2094,6 +2422,8 @@
 (cffi:defctype %sdl::display-mode
                (:struct %sdl::|C:@SA@SDL-DISPLAY-MODE|))
 
+(declaim (inline %sdl::get-closest-display-mode))
+
 (cffi:defcfun ("SDL_GetClosestDisplayMode"
                %sdl::get-closest-display-mode)
               (:pointer %sdl::display-mode)
@@ -2101,14 +2431,20 @@
               (%sdl::mode (:pointer %sdl::display-mode))
               (%sdl::closest (:pointer %sdl::display-mode)))
 
+(declaim (inline %sdl::get-color-key))
+
 (cffi:defcfun ("SDL_GetColorKey" %sdl::get-color-key)
               :int
               (%sdl::surface (:pointer %sdl::surface))
               (%sdl::key (:pointer %sdl::uint32)))
 
+(declaim (inline %sdl::get-current-audio-driver))
+
 (cffi:defcfun ("SDL_GetCurrentAudioDriver"
                %sdl::get-current-audio-driver)
               claw-utils:claw-string)
+
+(declaim (inline %sdl::get-current-display-mode))
 
 (cffi:defcfun ("SDL_GetCurrentDisplayMode"
                %sdl::get-current-display-mode)
@@ -2116,19 +2452,29 @@
               (%sdl::display-index :int)
               (%sdl::mode (:pointer %sdl::display-mode)))
 
+(declaim (inline %sdl::get-current-video-driver))
+
 (cffi:defcfun ("SDL_GetCurrentVideoDriver"
                %sdl::get-current-video-driver)
               claw-utils:claw-string)
 
+(declaim (inline %sdl::get-cursor))
+
 (cffi:defcfun ("SDL_GetCursor" %sdl::get-cursor)
               (:pointer %sdl::cursor))
+
+(declaim (inline %sdl::get-default-assertion-handler))
 
 (cffi:defcfun ("SDL_GetDefaultAssertionHandler"
                %sdl::get-default-assertion-handler)
               %sdl::assertion-handler)
 
+(declaim (inline %sdl::get-default-cursor))
+
 (cffi:defcfun ("SDL_GetDefaultCursor" %sdl::get-default-cursor)
               (:pointer %sdl::cursor))
+
+(declaim (inline %sdl::get-desktop-display-mode))
 
 (cffi:defcfun ("SDL_GetDesktopDisplayMode"
                %sdl::get-desktop-display-mode)
@@ -2136,10 +2482,14 @@
               (%sdl::display-index :int)
               (%sdl::mode (:pointer %sdl::display-mode)))
 
+(declaim (inline %sdl::get-display-bounds))
+
 (cffi:defcfun ("SDL_GetDisplayBounds" %sdl::get-display-bounds)
               :int
               (%sdl::display-index :int)
               (%sdl::rect (:pointer %sdl::rect)))
+
+(declaim (inline %sdl::get-display-dpi))
 
 (cffi:defcfun ("SDL_GetDisplayDPI" %sdl::get-display-dpi)
               :int
@@ -2148,11 +2498,15 @@
               (%sdl::hdpi (:pointer :float))
               (%sdl::vdpi (:pointer :float)))
 
+(declaim (inline %sdl::get-display-mode))
+
 (cffi:defcfun ("SDL_GetDisplayMode" %sdl::get-display-mode)
               :int
               (%sdl::display-index :int)
               (%sdl::mode-index :int)
               (%sdl::mode (:pointer %sdl::display-mode)))
+
+(declaim (inline %sdl::get-display-name))
 
 (cffi:defcfun ("SDL_GetDisplayName" %sdl::get-display-name)
               claw-utils:claw-string
@@ -2169,10 +2523,14 @@
 (cffi:defctype %sdl::display-orientation
                %sdl::|C:@EA@SDL-DISPLAY-ORIENTATION|)
 
+(declaim (inline %sdl::get-display-orientation))
+
 (cffi:defcfun ("SDL_GetDisplayOrientation"
                %sdl::get-display-orientation)
               %sdl::display-orientation
               (%sdl::display-index :int))
+
+(declaim (inline %sdl::get-display-usable-bounds))
 
 (cffi:defcfun ("SDL_GetDisplayUsableBounds"
                %sdl::get-display-usable-bounds)
@@ -2180,17 +2538,25 @@
               (%sdl::display-index :int)
               (%sdl::rect (:pointer %sdl::rect)))
 
+(declaim (inline %sdl::get-error))
+
 (cffi:defcfun ("SDL_GetError" %sdl::get-error) claw-utils:claw-string)
+
+(declaim (inline %sdl::get-error-msg))
 
 (cffi:defcfun ("SDL_GetErrorMsg" %sdl::get-error-msg)
               claw-utils:claw-string
               (%sdl::errstr claw-utils:claw-string)
               (%sdl::maxlen :int))
 
+(declaim (inline %sdl::get-event-filter))
+
 (cffi:defcfun ("SDL_GetEventFilter" %sdl::get-event-filter)
               %sdl::bool
               (%sdl::filter (:pointer %sdl::event-filter))
               (%sdl::userdata (:pointer (:pointer :void))))
+
+(declaim (inline %sdl::get-global-mouse-state))
 
 (cffi:defcfun ("SDL_GetGlobalMouseState"
                %sdl::get-global-mouse-state)
@@ -2198,12 +2564,18 @@
               (%sdl::x (:pointer :int))
               (%sdl::y (:pointer :int)))
 
+(declaim (inline %sdl::get-grabbed-window))
+
 (cffi:defcfun ("SDL_GetGrabbedWindow" %sdl::get-grabbed-window)
               (:pointer %sdl::window))
+
+(declaim (inline %sdl::get-hint))
 
 (cffi:defcfun ("SDL_GetHint" %sdl::get-hint)
               claw-utils:claw-string
               (%sdl::name claw-utils:claw-string))
+
+(declaim (inline %sdl::get-hint-boolean))
 
 (cffi:defcfun ("SDL_GetHintBoolean" %sdl::get-hint-boolean)
               %sdl::bool
@@ -2211,6 +2583,8 @@
               (%sdl::default-value %sdl::bool))
 
 (cffi:defctype %sdl::keycode :int)
+
+(declaim (inline %sdl::get-key-from-name))
 
 (cffi:defcfun ("SDL_GetKeyFromName" %sdl::get-key-from-name)
               %sdl::keycode
@@ -2465,16 +2839,24 @@
 
 (cffi:defctype %sdl::scancode %sdl::|C:@EA@SDL-SCANCODE|)
 
+(declaim (inline %sdl::get-key-from-scancode))
+
 (cffi:defcfun ("SDL_GetKeyFromScancode" %sdl::get-key-from-scancode)
               %sdl::keycode
               (%sdl::scancode %sdl::scancode))
+
+(declaim (inline %sdl::get-key-name))
 
 (cffi:defcfun ("SDL_GetKeyName" %sdl::get-key-name)
               claw-utils:claw-string
               (%sdl::key %sdl::keycode))
 
+(declaim (inline %sdl::get-keyboard-focus))
+
 (cffi:defcfun ("SDL_GetKeyboardFocus" %sdl::get-keyboard-focus)
               (:pointer %sdl::window))
+
+(declaim (inline %sdl::get-keyboard-state))
 
 (cffi:defcfun ("SDL_GetKeyboardState" %sdl::get-keyboard-state)
               (:pointer %sdl::uint8)
@@ -2487,6 +2869,8 @@
 (cffi:defctype %sdl::realloc-func (:pointer :pointer))
 
 (cffi:defctype %sdl::free-func (:pointer :pointer))
+
+(declaim (inline %sdl::get-memory-functions))
 
 (cffi:defcfun ("SDL_GetMemoryFunctions" %sdl::get-memory-functions)
               :void
@@ -2517,63 +2901,95 @@
 
 (cffi:defctype %sdl::keymod %sdl::|C:@EA@SDL-KEYMOD|)
 
+(declaim (inline %sdl::get-mod-state))
+
 (cffi:defcfun ("SDL_GetModState" %sdl::get-mod-state) %sdl::keymod)
+
+(declaim (inline %sdl::get-mouse-focus))
 
 (cffi:defcfun ("SDL_GetMouseFocus" %sdl::get-mouse-focus)
               (:pointer %sdl::window))
+
+(declaim (inline %sdl::get-mouse-state))
 
 (cffi:defcfun ("SDL_GetMouseState" %sdl::get-mouse-state)
               %sdl::uint32
               (%sdl::x (:pointer :int))
               (%sdl::y (:pointer :int)))
 
+(declaim (inline %sdl::get-num-allocations))
+
 (cffi:defcfun ("SDL_GetNumAllocations" %sdl::get-num-allocations)
               :int)
+
+(declaim (inline %sdl::get-num-audio-devices))
 
 (cffi:defcfun ("SDL_GetNumAudioDevices" %sdl::get-num-audio-devices)
               :int
               (%sdl::iscapture :int))
 
+(declaim (inline %sdl::get-num-audio-drivers))
+
 (cffi:defcfun ("SDL_GetNumAudioDrivers" %sdl::get-num-audio-drivers)
               :int)
+
+(declaim (inline %sdl::get-num-display-modes))
 
 (cffi:defcfun ("SDL_GetNumDisplayModes" %sdl::get-num-display-modes)
               :int
               (%sdl::display-index :int))
 
+(declaim (inline %sdl::get-num-render-drivers))
+
 (cffi:defcfun ("SDL_GetNumRenderDrivers"
                %sdl::get-num-render-drivers)
               :int)
+
+(declaim (inline %sdl::get-num-touch-devices))
 
 (cffi:defcfun ("SDL_GetNumTouchDevices" %sdl::get-num-touch-devices)
               :int)
 
 (cffi:defctype %sdl::touch-id :long)
 
+(declaim (inline %sdl::get-num-touch-fingers))
+
 (cffi:defcfun ("SDL_GetNumTouchFingers" %sdl::get-num-touch-fingers)
               :int
               (%sdl::touch-id %sdl::touch-id))
 
+(declaim (inline %sdl::get-num-video-displays))
+
 (cffi:defcfun ("SDL_GetNumVideoDisplays"
                %sdl::get-num-video-displays)
               :int)
+
+(declaim (inline %sdl::get-num-video-drivers))
 
 (cffi:defcfun ("SDL_GetNumVideoDrivers" %sdl::get-num-video-drivers)
               :int)
 
 (cffi:defctype %sdl::uint64 :unsigned-long)
 
+(declaim (inline %sdl::get-performance-counter))
+
 (cffi:defcfun ("SDL_GetPerformanceCounter"
                %sdl::get-performance-counter)
               %sdl::uint64)
+
+(declaim (inline %sdl::get-performance-frequency))
 
 (cffi:defcfun ("SDL_GetPerformanceFrequency"
                %sdl::get-performance-frequency)
               %sdl::uint64)
 
+(declaim (inline %sdl::get-pixel-format-name))
+
 (cffi:defcfun ("SDL_GetPixelFormatName" %sdl::get-pixel-format-name)
               claw-utils:claw-string
               (%sdl::format %sdl::uint32))
+
+(declaim (inline %sdl::get-platform))
 
 (cffi:defcfun ("SDL_GetPlatform" %sdl::get-platform)
               claw-utils:claw-string)
@@ -2588,10 +3004,14 @@
 
 (cffi:defctype %sdl::power-state %sdl::|C:@EA@SDL-POWER-STATE|)
 
+(declaim (inline %sdl::get-power-info))
+
 (cffi:defcfun ("SDL_GetPowerInfo" %sdl::get-power-info)
               %sdl::power-state
               (%sdl::secs (:pointer :int))
               (%sdl::pct (:pointer :int)))
+
+(declaim (inline %sdl::get-pref-path))
 
 (cffi:defcfun ("SDL_GetPrefPath" %sdl::get-pref-path)
               claw-utils:claw-string
@@ -2604,12 +3024,18 @@
 
 (cffi:defctype %sdl::locale (:struct %sdl::locale))
 
+(declaim (inline %sdl::get-preferred-locales))
+
 (cffi:defcfun ("SDL_GetPreferredLocales" %sdl::get-preferred-locales)
               (:pointer %sdl::locale))
+
+(declaim (inline %sdl::get-queued-audio-size))
 
 (cffi:defcfun ("SDL_GetQueuedAudioSize" %sdl::get-queued-audio-size)
               %sdl::uint32
               (%sdl::dev %sdl::audio-device-id))
+
+(declaim (inline %sdl::get-rgb))
 
 (cffi:defcfun ("SDL_GetRGB" %sdl::get-rgb)
               :void
@@ -2618,6 +3044,8 @@
               (%sdl::r (:pointer %sdl::uint8))
               (%sdl::g (:pointer %sdl::uint8))
               (%sdl::b (:pointer %sdl::uint8)))
+
+(declaim (inline %sdl::get-rgba))
 
 (cffi:defcfun ("SDL_GetRGBA" %sdl::get-rgba)
               :void
@@ -2628,9 +3056,13 @@
               (%sdl::b (:pointer %sdl::uint8))
               (%sdl::a (:pointer %sdl::uint8)))
 
+(declaim (inline %sdl::get-relative-mouse-mode))
+
 (cffi:defcfun ("SDL_GetRelativeMouseMode"
                %sdl::get-relative-mouse-mode)
               %sdl::bool)
+
+(declaim (inline %sdl::get-relative-mouse-state))
 
 (cffi:defcfun ("SDL_GetRelativeMouseState"
                %sdl::get-relative-mouse-state)
@@ -2638,11 +3070,15 @@
               (%sdl::x (:pointer :int))
               (%sdl::y (:pointer :int)))
 
+(declaim (inline %sdl::get-render-draw-blend-mode))
+
 (cffi:defcfun ("SDL_GetRenderDrawBlendMode"
                %sdl::get-render-draw-blend-mode)
               :int
               (%sdl::renderer (:pointer %sdl::renderer))
               (%sdl::blend-mode (:pointer %sdl::blend-mode)))
+
+(declaim (inline %sdl::get-render-draw-color))
 
 (cffi:defcfun ("SDL_GetRenderDrawColor" %sdl::get-render-draw-color)
               :int
@@ -2663,24 +3099,34 @@
 
 (cffi:defctype %sdl::renderer-info (:struct %sdl::renderer-info))
 
+(declaim (inline %sdl::get-render-driver-info))
+
 (cffi:defcfun ("SDL_GetRenderDriverInfo"
                %sdl::get-render-driver-info)
               :int
               (%sdl::index :int)
               (%sdl::info (:pointer %sdl::renderer-info)))
 
+(declaim (inline %sdl::get-render-target))
+
 (cffi:defcfun ("SDL_GetRenderTarget" %sdl::get-render-target)
               (:pointer %sdl::texture)
               (%sdl::renderer (:pointer %sdl::renderer)))
+
+(declaim (inline %sdl::get-renderer))
 
 (cffi:defcfun ("SDL_GetRenderer" %sdl::get-renderer)
               (:pointer %sdl::renderer)
               (%sdl::window (:pointer %sdl::window)))
 
+(declaim (inline %sdl::get-renderer-info))
+
 (cffi:defcfun ("SDL_GetRendererInfo" %sdl::get-renderer-info)
               :int
               (%sdl::renderer (:pointer %sdl::renderer))
               (%sdl::info (:pointer %sdl::renderer-info)))
+
+(declaim (inline %sdl::get-renderer-output-size))
 
 (cffi:defcfun ("SDL_GetRendererOutputSize"
                %sdl::get-renderer-output-size)
@@ -2689,20 +3135,30 @@
               (%sdl::w (:pointer :int))
               (%sdl::h (:pointer :int)))
 
+(declaim (inline %sdl::get-revision))
+
 (cffi:defcfun ("SDL_GetRevision" %sdl::get-revision)
               claw-utils:claw-string)
 
+(declaim (inline %sdl::get-revision-number))
+
 (cffi:defcfun ("SDL_GetRevisionNumber" %sdl::get-revision-number)
               :int)
+
+(declaim (inline %sdl::get-scancode-from-key))
 
 (cffi:defcfun ("SDL_GetScancodeFromKey" %sdl::get-scancode-from-key)
               %sdl::scancode
               (%sdl::key %sdl::keycode))
 
+(declaim (inline %sdl::get-scancode-from-name))
+
 (cffi:defcfun ("SDL_GetScancodeFromName"
                %sdl::get-scancode-from-name)
               %sdl::scancode
               (%sdl::name claw-utils:claw-string))
+
+(declaim (inline %sdl::get-scancode-name))
 
 (cffi:defcfun ("SDL_GetScancodeName" %sdl::get-scancode-name)
               claw-utils:claw-string
@@ -2733,22 +3189,30 @@
 (cffi:defctype %sdl::window-shape-mode
                (:struct %sdl::window-shape-mode))
 
+(declaim (inline %sdl::get-shaped-window-mode))
+
 (cffi:defcfun ("SDL_GetShapedWindowMode"
                %sdl::get-shaped-window-mode)
               :int
               (%sdl::window (:pointer %sdl::window))
               (%sdl::shape-mode (:pointer %sdl::window-shape-mode)))
 
+(declaim (inline %sdl::get-surface-alpha-mod))
+
 (cffi:defcfun ("SDL_GetSurfaceAlphaMod" %sdl::get-surface-alpha-mod)
               :int
               (%sdl::surface (:pointer %sdl::surface))
               (%sdl::alpha (:pointer %sdl::uint8)))
+
+(declaim (inline %sdl::get-surface-blend-mode))
 
 (cffi:defcfun ("SDL_GetSurfaceBlendMode"
                %sdl::get-surface-blend-mode)
               :int
               (%sdl::surface (:pointer %sdl::surface))
               (%sdl::blend-mode (:pointer %sdl::blend-mode)))
+
+(declaim (inline %sdl::get-surface-color-mod))
 
 (cffi:defcfun ("SDL_GetSurfaceColorMod" %sdl::get-surface-color-mod)
               :int
@@ -2757,18 +3221,26 @@
               (%sdl::g (:pointer %sdl::uint8))
               (%sdl::b (:pointer %sdl::uint8)))
 
+(declaim (inline %sdl::get-system-ram))
+
 (cffi:defcfun ("SDL_GetSystemRAM" %sdl::get-system-ram) :int)
+
+(declaim (inline %sdl::get-texture-alpha-mod))
 
 (cffi:defcfun ("SDL_GetTextureAlphaMod" %sdl::get-texture-alpha-mod)
               :int
               (%sdl::texture (:pointer %sdl::texture))
               (%sdl::alpha (:pointer %sdl::uint8)))
 
+(declaim (inline %sdl::get-texture-blend-mode))
+
 (cffi:defcfun ("SDL_GetTextureBlendMode"
                %sdl::get-texture-blend-mode)
               :int
               (%sdl::texture (:pointer %sdl::texture))
               (%sdl::blend-mode (:pointer %sdl::blend-mode)))
+
+(declaim (inline %sdl::get-texture-color-mod))
 
 (cffi:defcfun ("SDL_GetTextureColorMod" %sdl::get-texture-color-mod)
               :int
@@ -2785,6 +3257,8 @@
 
 (cffi:defctype %sdl::scale-mode %sdl::|C:@EA@SDL-SCALE-MODE|)
 
+(declaim (inline %sdl::get-texture-scale-mode))
+
 (cffi:defcfun ("SDL_GetTextureScaleMode"
                %sdl::get-texture-scale-mode)
               :int
@@ -2793,15 +3267,23 @@
 
 (cffi:defctype %sdl::thread-id :unsigned-long)
 
+(declaim (inline %sdl::get-thread-id))
+
 (cffi:defcfun ("SDL_GetThreadID" %sdl::get-thread-id)
               %sdl::thread-id
               (%sdl::thread (:pointer %sdl::thread)))
+
+(declaim (inline %sdl::get-thread-name))
 
 (cffi:defcfun ("SDL_GetThreadName" %sdl::get-thread-name)
               claw-utils:claw-string
               (%sdl::thread (:pointer %sdl::thread)))
 
+(declaim (inline %sdl::get-ticks))
+
 (cffi:defcfun ("SDL_GetTicks" %sdl::get-ticks) %sdl::uint32)
+
+(declaim (inline %sdl::get-touch-device))
 
 (cffi:defcfun ("SDL_GetTouchDevice" %sdl::get-touch-device)
               %sdl::touch-id
@@ -2817,6 +3299,8 @@
 (cffi:defctype %sdl::touch-device-type
                %sdl::|C:@EA@SDL-TOUCH-DEVICE-TYPE|)
 
+(declaim (inline %sdl::get-touch-device-type))
+
 (cffi:defcfun ("SDL_GetTouchDeviceType" %sdl::get-touch-device-type)
               %sdl::touch-device-type
               (%sdl::touch-id %sdl::touch-id))
@@ -2831,6 +3315,8 @@
 
 (cffi:defctype %sdl::finger (:struct %sdl::finger))
 
+(declaim (inline %sdl::get-touch-finger))
+
 (cffi:defcfun ("SDL_GetTouchFinger" %sdl::get-touch-finger)
               (:pointer %sdl::finger)
               (%sdl::touch-id %sdl::touch-id)
@@ -2843,13 +3329,19 @@
 
 (cffi:defctype %sdl::version (:struct %sdl::version))
 
+(declaim (inline %sdl::get-version))
+
 (cffi:defcfun ("SDL_GetVersion" %sdl::get-version)
               :void
               (%sdl::ver (:pointer %sdl::version)))
 
+(declaim (inline %sdl::get-video-driver))
+
 (cffi:defcfun ("SDL_GetVideoDriver" %sdl::get-video-driver)
               claw-utils:claw-string
               (%sdl::index :int))
+
+(declaim (inline %sdl::get-window-borders-size))
 
 (cffi:defcfun ("SDL_GetWindowBordersSize"
                %sdl::get-window-borders-size)
@@ -2860,19 +3352,27 @@
               (%sdl::bottom (:pointer :int))
               (%sdl::right (:pointer :int)))
 
+(declaim (inline %sdl::get-window-brightness))
+
 (cffi:defcfun ("SDL_GetWindowBrightness" %sdl::get-window-brightness)
               :float
               (%sdl::window (:pointer %sdl::window)))
+
+(declaim (inline %sdl::get-window-data))
 
 (cffi:defcfun ("SDL_GetWindowData" %sdl::get-window-data)
               (:pointer :void)
               (%sdl::window (:pointer %sdl::window))
               (%sdl::name claw-utils:claw-string))
 
+(declaim (inline %sdl::get-window-display-index))
+
 (cffi:defcfun ("SDL_GetWindowDisplayIndex"
                %sdl::get-window-display-index)
               :int
               (%sdl::window (:pointer %sdl::window)))
+
+(declaim (inline %sdl::get-window-display-mode))
 
 (cffi:defcfun ("SDL_GetWindowDisplayMode"
                %sdl::get-window-display-mode)
@@ -2880,13 +3380,19 @@
               (%sdl::window (:pointer %sdl::window))
               (%sdl::mode (:pointer %sdl::display-mode)))
 
+(declaim (inline %sdl::get-window-flags))
+
 (cffi:defcfun ("SDL_GetWindowFlags" %sdl::get-window-flags)
               %sdl::uint32
               (%sdl::window (:pointer %sdl::window)))
 
+(declaim (inline %sdl::get-window-from-id))
+
 (cffi:defcfun ("SDL_GetWindowFromID" %sdl::get-window-from-id)
               (:pointer %sdl::window)
               (%sdl::id %sdl::uint32))
+
+(declaim (inline %sdl::get-window-gamma-ramp))
 
 (cffi:defcfun ("SDL_GetWindowGammaRamp" %sdl::get-window-gamma-ramp)
               :int
@@ -2895,13 +3401,19 @@
               (%sdl::green (:pointer %sdl::uint16))
               (%sdl::blue (:pointer %sdl::uint16)))
 
+(declaim (inline %sdl::get-window-grab))
+
 (cffi:defcfun ("SDL_GetWindowGrab" %sdl::get-window-grab)
               %sdl::bool
               (%sdl::window (:pointer %sdl::window)))
 
+(declaim (inline %sdl::get-window-id))
+
 (cffi:defcfun ("SDL_GetWindowID" %sdl::get-window-id)
               %sdl::uint32
               (%sdl::window (:pointer %sdl::window)))
+
+(declaim (inline %sdl::get-window-maximum-size))
 
 (cffi:defcfun ("SDL_GetWindowMaximumSize"
                %sdl::get-window-maximum-size)
@@ -2910,6 +3422,8 @@
               (%sdl::w (:pointer :int))
               (%sdl::h (:pointer :int)))
 
+(declaim (inline %sdl::get-window-minimum-size))
+
 (cffi:defcfun ("SDL_GetWindowMinimumSize"
                %sdl::get-window-minimum-size)
               :void
@@ -2917,15 +3431,21 @@
               (%sdl::w (:pointer :int))
               (%sdl::h (:pointer :int)))
 
+(declaim (inline %sdl::get-window-opacity))
+
 (cffi:defcfun ("SDL_GetWindowOpacity" %sdl::get-window-opacity)
               :int
               (%sdl::window (:pointer %sdl::window))
               (%sdl::out-opacity (:pointer :float)))
 
+(declaim (inline %sdl::get-window-pixel-format))
+
 (cffi:defcfun ("SDL_GetWindowPixelFormat"
                %sdl::get-window-pixel-format)
               %sdl::uint32
               (%sdl::window (:pointer %sdl::window)))
+
+(declaim (inline %sdl::get-window-position))
 
 (cffi:defcfun ("SDL_GetWindowPosition" %sdl::get-window-position)
               :void
@@ -2933,15 +3453,21 @@
               (%sdl::x (:pointer :int))
               (%sdl::y (:pointer :int)))
 
+(declaim (inline %sdl::get-window-size))
+
 (cffi:defcfun ("SDL_GetWindowSize" %sdl::get-window-size)
               :void
               (%sdl::window (:pointer %sdl::window))
               (%sdl::w (:pointer :int))
               (%sdl::h (:pointer :int)))
 
+(declaim (inline %sdl::get-window-surface))
+
 (cffi:defcfun ("SDL_GetWindowSurface" %sdl::get-window-surface)
               (:pointer %sdl::surface)
               (%sdl::window (:pointer %sdl::window)))
+
+(declaim (inline %sdl::get-window-title))
 
 (cffi:defcfun ("SDL_GetWindowTitle" %sdl::get-window-title)
               claw-utils:claw-string
@@ -3012,6 +3538,8 @@
 
 (cffi:defctype %sdl::sys-w-minfo (:struct %sdl::sys-w-minfo))
 
+(declaim (inline %sdl::get-window-wm-info))
+
 (cffi:defcfun ("SDL_GetWindowWMInfo" %sdl::get-window-wm-info)
               %sdl::bool
               (%sdl::window (:pointer %sdl::window))
@@ -3027,9 +3555,13 @@
 (cffi:defctype %sdl::yuv-conversion-mode
                %sdl::|C:@EA@SDL-YUV-CONVERSION-MODE|)
 
+(declaim (inline %sdl::get-yuv-conversion-mode))
+
 (cffi:defcfun ("SDL_GetYUVConversionMode"
                %sdl::get-yuv-conversion-mode)
               %sdl::yuv-conversion-mode)
+
+(declaim (inline %sdl::get-yuv-conversion-mode-for-resolution))
 
 (cffi:defcfun ("SDL_GetYUVConversionModeForResolution"
                %sdl::get-yuv-conversion-mode-for-resolution)
@@ -3041,9 +3573,13 @@
 
 (cffi:defctype %sdl::haptic (:struct %sdl::%sdl-haptic))
 
+(declaim (inline %sdl::haptic-close))
+
 (cffi:defcfun ("SDL_HapticClose" %sdl::haptic-close)
               :void
               (%sdl::haptic (:pointer %sdl::haptic)))
+
+(declaim (inline %sdl::haptic-destroy-effect))
 
 (cffi:defcfun ("SDL_HapticDestroyEffect" %sdl::haptic-destroy-effect)
               :void
@@ -3163,11 +3699,15 @@
 
 (cffi:defctype %sdl::haptic-effect (:union %sdl::haptic-effect))
 
+(declaim (inline %sdl::haptic-effect-supported))
+
 (cffi:defcfun ("SDL_HapticEffectSupported"
                %sdl::haptic-effect-supported)
               :int
               (%sdl::haptic (:pointer %sdl::haptic))
               (%sdl::effect (:pointer %sdl::haptic-effect)))
+
+(declaim (inline %sdl::haptic-get-effect-status))
 
 (cffi:defcfun ("SDL_HapticGetEffectStatus"
                %sdl::haptic-get-effect-status)
@@ -3175,60 +3715,88 @@
               (%sdl::haptic (:pointer %sdl::haptic))
               (%sdl::effect :int))
 
+(declaim (inline %sdl::haptic-index))
+
 (cffi:defcfun ("SDL_HapticIndex" %sdl::haptic-index)
               :int
               (%sdl::haptic (:pointer %sdl::haptic)))
 
+(declaim (inline %sdl::haptic-name))
+
 (cffi:defcfun ("SDL_HapticName" %sdl::haptic-name)
               claw-utils:claw-string
               (%sdl::device-index :int))
+
+(declaim (inline %sdl::haptic-new-effect))
 
 (cffi:defcfun ("SDL_HapticNewEffect" %sdl::haptic-new-effect)
               :int
               (%sdl::haptic (:pointer %sdl::haptic))
               (%sdl::effect (:pointer %sdl::haptic-effect)))
 
+(declaim (inline %sdl::haptic-num-axes))
+
 (cffi:defcfun ("SDL_HapticNumAxes" %sdl::haptic-num-axes)
               :int
               (%sdl::haptic (:pointer %sdl::haptic)))
 
+(declaim (inline %sdl::haptic-num-effects))
+
 (cffi:defcfun ("SDL_HapticNumEffects" %sdl::haptic-num-effects)
               :int
               (%sdl::haptic (:pointer %sdl::haptic)))
+
+(declaim (inline %sdl::haptic-num-effects-playing))
 
 (cffi:defcfun ("SDL_HapticNumEffectsPlaying"
                %sdl::haptic-num-effects-playing)
               :int
               (%sdl::haptic (:pointer %sdl::haptic)))
 
+(declaim (inline %sdl::haptic-open))
+
 (cffi:defcfun ("SDL_HapticOpen" %sdl::haptic-open)
               (:pointer %sdl::haptic)
               (%sdl::device-index :int))
+
+(declaim (inline %sdl::haptic-open-from-joystick))
 
 (cffi:defcfun ("SDL_HapticOpenFromJoystick"
                %sdl::haptic-open-from-joystick)
               (:pointer %sdl::haptic)
               (%sdl::joystick (:pointer %sdl::joystick)))
 
+(declaim (inline %sdl::haptic-open-from-mouse))
+
 (cffi:defcfun ("SDL_HapticOpenFromMouse"
                %sdl::haptic-open-from-mouse)
               (:pointer %sdl::haptic))
+
+(declaim (inline %sdl::haptic-opened))
 
 (cffi:defcfun ("SDL_HapticOpened" %sdl::haptic-opened)
               :int
               (%sdl::device-index :int))
 
+(declaim (inline %sdl::haptic-pause))
+
 (cffi:defcfun ("SDL_HapticPause" %sdl::haptic-pause)
               :int
               (%sdl::haptic (:pointer %sdl::haptic)))
+
+(declaim (inline %sdl::haptic-query))
 
 (cffi:defcfun ("SDL_HapticQuery" %sdl::haptic-query)
               :unsigned-int
               (%sdl::haptic (:pointer %sdl::haptic)))
 
+(declaim (inline %sdl::haptic-rumble-init))
+
 (cffi:defcfun ("SDL_HapticRumbleInit" %sdl::haptic-rumble-init)
               :int
               (%sdl::haptic (:pointer %sdl::haptic)))
+
+(declaim (inline %sdl::haptic-rumble-play))
 
 (cffi:defcfun ("SDL_HapticRumblePlay" %sdl::haptic-rumble-play)
               :int
@@ -3236,14 +3804,20 @@
               (%sdl::strength :float)
               (%sdl::length %sdl::uint32))
 
+(declaim (inline %sdl::haptic-rumble-stop))
+
 (cffi:defcfun ("SDL_HapticRumbleStop" %sdl::haptic-rumble-stop)
               :int
               (%sdl::haptic (:pointer %sdl::haptic)))
+
+(declaim (inline %sdl::haptic-rumble-supported))
 
 (cffi:defcfun ("SDL_HapticRumbleSupported"
                %sdl::haptic-rumble-supported)
               :int
               (%sdl::haptic (:pointer %sdl::haptic)))
+
+(declaim (inline %sdl::haptic-run-effect))
 
 (cffi:defcfun ("SDL_HapticRunEffect" %sdl::haptic-run-effect)
               :int
@@ -3251,28 +3825,40 @@
               (%sdl::effect :int)
               (%sdl::iterations %sdl::uint32))
 
+(declaim (inline %sdl::haptic-set-autocenter))
+
 (cffi:defcfun ("SDL_HapticSetAutocenter" %sdl::haptic-set-autocenter)
               :int
               (%sdl::haptic (:pointer %sdl::haptic))
               (%sdl::autocenter :int))
+
+(declaim (inline %sdl::haptic-set-gain))
 
 (cffi:defcfun ("SDL_HapticSetGain" %sdl::haptic-set-gain)
               :int
               (%sdl::haptic (:pointer %sdl::haptic))
               (%sdl::gain :int))
 
+(declaim (inline %sdl::haptic-stop-all))
+
 (cffi:defcfun ("SDL_HapticStopAll" %sdl::haptic-stop-all)
               :int
               (%sdl::haptic (:pointer %sdl::haptic)))
+
+(declaim (inline %sdl::haptic-stop-effect))
 
 (cffi:defcfun ("SDL_HapticStopEffect" %sdl::haptic-stop-effect)
               :int
               (%sdl::haptic (:pointer %sdl::haptic))
               (%sdl::effect :int))
 
+(declaim (inline %sdl::haptic-unpause))
+
 (cffi:defcfun ("SDL_HapticUnpause" %sdl::haptic-unpause)
               :int
               (%sdl::haptic (:pointer %sdl::haptic)))
+
+(declaim (inline %sdl::haptic-update-effect))
 
 (cffi:defcfun ("SDL_HapticUpdateEffect" %sdl::haptic-update-effect)
               :int
@@ -3280,78 +3866,130 @@
               (%sdl::effect :int)
               (%sdl::data (:pointer %sdl::haptic-effect)))
 
+(declaim (inline %sdl::has3d-now))
+
 (cffi:defcfun ("SDL_Has3DNow" %sdl::has3d-now) %sdl::bool)
+
+(declaim (inline %sdl::has-armsimd))
 
 (cffi:defcfun ("SDL_HasARMSIMD" %sdl::has-armsimd) %sdl::bool)
 
+(declaim (inline %sdl::has-avx))
+
 (cffi:defcfun ("SDL_HasAVX" %sdl::has-avx) %sdl::bool)
+
+(declaim (inline %sdl::has-avx2))
 
 (cffi:defcfun ("SDL_HasAVX2" %sdl::has-avx2) %sdl::bool)
 
+(declaim (inline %sdl::has-avx512f))
+
 (cffi:defcfun ("SDL_HasAVX512F" %sdl::has-avx512f) %sdl::bool)
+
+(declaim (inline %sdl::has-alti-vec))
 
 (cffi:defcfun ("SDL_HasAltiVec" %sdl::has-alti-vec) %sdl::bool)
 
+(declaim (inline %sdl::has-clipboard-text))
+
 (cffi:defcfun ("SDL_HasClipboardText" %sdl::has-clipboard-text)
               %sdl::bool)
+
+(declaim (inline %sdl::has-color-key))
 
 (cffi:defcfun ("SDL_HasColorKey" %sdl::has-color-key)
               %sdl::bool
               (%sdl::surface (:pointer %sdl::surface)))
 
+(declaim (inline %sdl::has-event))
+
 (cffi:defcfun ("SDL_HasEvent" %sdl::has-event)
               %sdl::bool
               (%sdl::type %sdl::uint32))
+
+(declaim (inline %sdl::has-events))
 
 (cffi:defcfun ("SDL_HasEvents" %sdl::has-events)
               %sdl::bool
               (%sdl::min-type %sdl::uint32)
               (%sdl::max-type %sdl::uint32))
 
+(declaim (inline %sdl::has-intersection))
+
 (cffi:defcfun ("SDL_HasIntersection" %sdl::has-intersection)
               %sdl::bool
               (%sdl::a (:pointer %sdl::rect))
               (%sdl::b (:pointer %sdl::rect)))
 
+(declaim (inline %sdl::has-mmx))
+
 (cffi:defcfun ("SDL_HasMMX" %sdl::has-mmx) %sdl::bool)
+
+(declaim (inline %sdl::has-neon))
 
 (cffi:defcfun ("SDL_HasNEON" %sdl::has-neon) %sdl::bool)
 
+(declaim (inline %sdl::has-rdtsc))
+
 (cffi:defcfun ("SDL_HasRDTSC" %sdl::has-rdtsc) %sdl::bool)
+
+(declaim (inline %sdl::has-sse))
 
 (cffi:defcfun ("SDL_HasSSE" %sdl::has-sse) %sdl::bool)
 
+(declaim (inline %sdl::has-sse2))
+
 (cffi:defcfun ("SDL_HasSSE2" %sdl::has-sse2) %sdl::bool)
+
+(declaim (inline %sdl::has-sse3))
 
 (cffi:defcfun ("SDL_HasSSE3" %sdl::has-sse3) %sdl::bool)
 
+(declaim (inline %sdl::has-sse41))
+
 (cffi:defcfun ("SDL_HasSSE41" %sdl::has-sse41) %sdl::bool)
 
+(declaim (inline %sdl::has-sse42))
+
 (cffi:defcfun ("SDL_HasSSE42" %sdl::has-sse42) %sdl::bool)
+
+(declaim (inline %sdl::has-screen-keyboard-support))
 
 (cffi:defcfun ("SDL_HasScreenKeyboardSupport"
                %sdl::has-screen-keyboard-support)
               %sdl::bool)
 
+(declaim (inline %sdl::has-surface-rle))
+
 (cffi:defcfun ("SDL_HasSurfaceRLE" %sdl::has-surface-rle)
               %sdl::bool
               (%sdl::surface (:pointer %sdl::surface)))
+
+(declaim (inline %sdl::hide-window))
 
 (cffi:defcfun ("SDL_HideWindow" %sdl::hide-window)
               :void
               (%sdl::window (:pointer %sdl::window)))
 
+(declaim (inline %sdl::init))
+
 (cffi:defcfun ("SDL_Init" %sdl::init) :int (%sdl::flags %sdl::uint32))
+
+(declaim (inline %sdl::init-sub-system))
 
 (cffi:defcfun ("SDL_InitSubSystem" %sdl::init-sub-system)
               :int
               (%sdl::flags %sdl::uint32))
+
+(declaim (inline %sdl::intersect-rect))
 
 (cffi:defcfun ("SDL_IntersectRect" %sdl::intersect-rect)
               %sdl::bool
               (%sdl::a (:pointer %sdl::rect))
               (%sdl::b (:pointer %sdl::rect))
               (%sdl::result (:pointer %sdl::rect)))
+
+(declaim (inline %sdl::intersect-rect-and-line))
 
 (cffi:defcfun ("SDL_IntersectRectAndLine"
                %sdl::intersect-rect-and-line)
@@ -3362,24 +4000,36 @@
               (%sdl::x2 (:pointer :int))
               (%sdl::y2 (:pointer :int)))
 
+(declaim (inline %sdl::is-game-controller))
+
 (cffi:defcfun ("SDL_IsGameController" %sdl::is-game-controller)
               %sdl::bool
               (%sdl::joystick-index :int))
+
+(declaim (inline %sdl::is-screen-keyboard-shown))
 
 (cffi:defcfun ("SDL_IsScreenKeyboardShown"
                %sdl::is-screen-keyboard-shown)
               %sdl::bool
               (%sdl::window (:pointer %sdl::window)))
 
+(declaim (inline %sdl::is-screen-saver-enabled))
+
 (cffi:defcfun ("SDL_IsScreenSaverEnabled"
                %sdl::is-screen-saver-enabled)
               %sdl::bool)
+
+(declaim (inline %sdl::is-shaped-window))
 
 (cffi:defcfun ("SDL_IsShapedWindow" %sdl::is-shaped-window)
               %sdl::bool
               (%sdl::window (:pointer %sdl::window)))
 
+(declaim (inline %sdl::is-tablet))
+
 (cffi:defcfun ("SDL_IsTablet" %sdl::is-tablet) %sdl::bool)
+
+(declaim (inline %sdl::is-text-input-active))
 
 (cffi:defcfun ("SDL_IsTextInputActive" %sdl::is-text-input-active)
               %sdl::bool)
@@ -3399,6 +4049,8 @@
 
 (cffi:defctype %sdl::joystick-type %sdl::|C:@EA@SDL-JOYSTICK-TYPE|)
 
+(declaim (inline %sdl::joystick-attach-virtual))
+
 (cffi:defcfun ("SDL_JoystickAttachVirtual"
                %sdl::joystick-attach-virtual)
               :int
@@ -3406,6 +4058,8 @@
               (%sdl::naxes :int)
               (%sdl::nbuttons :int)
               (%sdl::nhats :int))
+
+(declaim (inline %sdl::joystick-close))
 
 (cffi:defcfun ("SDL_JoystickClose" %sdl::joystick-close)
               :void
@@ -3424,38 +4078,54 @@
 (cffi:defctype %sdl::joystick-power-level
                %sdl::|C:@EA@SDL-JOYSTICK-POWER-LEVEL|)
 
+(declaim (inline %sdl::joystick-current-power-level))
+
 (cffi:defcfun ("SDL_JoystickCurrentPowerLevel"
                %sdl::joystick-current-power-level)
               %sdl::joystick-power-level
               (%sdl::joystick (:pointer %sdl::joystick)))
+
+(declaim (inline %sdl::joystick-detach-virtual))
 
 (cffi:defcfun ("SDL_JoystickDetachVirtual"
                %sdl::joystick-detach-virtual)
               :int
               (%sdl::device-index :int))
 
+(declaim (inline %sdl::joystick-event-state))
+
 (cffi:defcfun ("SDL_JoystickEventState" %sdl::joystick-event-state)
               :int
               (%sdl::state :int))
+
+(declaim (inline %sdl::joystick-from-instance-id))
 
 (cffi:defcfun ("SDL_JoystickFromInstanceID"
                %sdl::joystick-from-instance-id)
               (:pointer %sdl::joystick)
               (%sdl::instance-id %sdl::joystick-id))
 
+(declaim (inline %sdl::joystick-from-player-index))
+
 (cffi:defcfun ("SDL_JoystickFromPlayerIndex"
                %sdl::joystick-from-player-index)
               (:pointer %sdl::joystick)
               (%sdl::player-index :int))
 
+(declaim (inline %sdl::joystick-get-attached))
+
 (cffi:defcfun ("SDL_JoystickGetAttached" %sdl::joystick-get-attached)
               %sdl::bool
               (%sdl::joystick (:pointer %sdl::joystick)))
+
+(declaim (inline %sdl::joystick-get-axis))
 
 (cffi:defcfun ("SDL_JoystickGetAxis" %sdl::joystick-get-axis)
               %sdl::sint16
               (%sdl::joystick (:pointer %sdl::joystick))
               (%sdl::axis :int))
+
+(declaim (inline %sdl::joystick-get-axis-initial-state))
 
 (cffi:defcfun ("SDL_JoystickGetAxisInitialState"
                %sdl::joystick-get-axis-initial-state)
@@ -3464,6 +4134,8 @@
               (%sdl::axis :int)
               (%sdl::state (:pointer %sdl::sint16)))
 
+(declaim (inline %sdl::joystick-get-ball))
+
 (cffi:defcfun ("SDL_JoystickGetBall" %sdl::joystick-get-ball)
               :int
               (%sdl::joystick (:pointer %sdl::joystick))
@@ -3471,10 +4143,14 @@
               (%sdl::dx (:pointer :int))
               (%sdl::dy (:pointer :int)))
 
+(declaim (inline %sdl::joystick-get-button))
+
 (cffi:defcfun ("SDL_JoystickGetButton" %sdl::joystick-get-button)
               %sdl::uint8
               (%sdl::joystick (:pointer %sdl::joystick))
               (%sdl::button :int))
+
+(declaim (inline %sdl::joystick-get-device-guid))
 
 (cffi:defcfun ("__claw_SDL_JoystickGetDeviceGUID"
                %sdl::joystick-get-device-guid)
@@ -3482,46 +4158,64 @@
               (%sdl::%%claw-result- (:pointer %sdl::joystick-guid))
               (%sdl::device-index :int))
 
+(declaim (inline %sdl::joystick-get-device-instance-id))
+
 (cffi:defcfun ("SDL_JoystickGetDeviceInstanceID"
                %sdl::joystick-get-device-instance-id)
               %sdl::joystick-id
               (%sdl::device-index :int))
+
+(declaim (inline %sdl::joystick-get-device-player-index))
 
 (cffi:defcfun ("SDL_JoystickGetDevicePlayerIndex"
                %sdl::joystick-get-device-player-index)
               :int
               (%sdl::device-index :int))
 
+(declaim (inline %sdl::joystick-get-device-product))
+
 (cffi:defcfun ("SDL_JoystickGetDeviceProduct"
                %sdl::joystick-get-device-product)
               %sdl::uint16
               (%sdl::device-index :int))
+
+(declaim (inline %sdl::joystick-get-device-product-version))
 
 (cffi:defcfun ("SDL_JoystickGetDeviceProductVersion"
                %sdl::joystick-get-device-product-version)
               %sdl::uint16
               (%sdl::device-index :int))
 
+(declaim (inline %sdl::joystick-get-device-type))
+
 (cffi:defcfun ("SDL_JoystickGetDeviceType"
                %sdl::joystick-get-device-type)
               %sdl::joystick-type
               (%sdl::device-index :int))
+
+(declaim (inline %sdl::joystick-get-device-vendor))
 
 (cffi:defcfun ("SDL_JoystickGetDeviceVendor"
                %sdl::joystick-get-device-vendor)
               %sdl::uint16
               (%sdl::device-index :int))
 
+(declaim (inline %sdl::joystick-get-guid))
+
 (cffi:defcfun ("__claw_SDL_JoystickGetGUID" %sdl::joystick-get-guid)
               (:pointer %sdl::joystick-guid)
               (%sdl::%%claw-result- (:pointer %sdl::joystick-guid))
               (%sdl::joystick (:pointer %sdl::joystick)))
+
+(declaim (inline %sdl::joystick-get-guid-from-string))
 
 (cffi:defcfun ("__claw_SDL_JoystickGetGUIDFromString"
                %sdl::joystick-get-guid-from-string)
               (:pointer %sdl::joystick-guid)
               (%sdl::%%claw-result- (:pointer %sdl::joystick-guid))
               (%sdl::pch-guid claw-utils:claw-string))
+
+(declaim (inline %sdl::joystick-get-guid-string))
 
 (cffi:defcfun ("SDL_JoystickGetGUIDString"
                %sdl::joystick-get-guid-string)
@@ -3530,81 +4224,119 @@
               (%sdl::psz-guid claw-utils:claw-string)
               (%sdl::cb-guid :int))
 
+(declaim (inline %sdl::joystick-get-hat))
+
 (cffi:defcfun ("SDL_JoystickGetHat" %sdl::joystick-get-hat)
               %sdl::uint8
               (%sdl::joystick (:pointer %sdl::joystick))
               (%sdl::hat :int))
+
+(declaim (inline %sdl::joystick-get-player-index))
 
 (cffi:defcfun ("SDL_JoystickGetPlayerIndex"
                %sdl::joystick-get-player-index)
               :int
               (%sdl::joystick (:pointer %sdl::joystick)))
 
+(declaim (inline %sdl::joystick-get-product))
+
 (cffi:defcfun ("SDL_JoystickGetProduct" %sdl::joystick-get-product)
               %sdl::uint16
               (%sdl::joystick (:pointer %sdl::joystick)))
+
+(declaim (inline %sdl::joystick-get-product-version))
 
 (cffi:defcfun ("SDL_JoystickGetProductVersion"
                %sdl::joystick-get-product-version)
               %sdl::uint16
               (%sdl::joystick (:pointer %sdl::joystick)))
 
+(declaim (inline %sdl::joystick-get-serial))
+
 (cffi:defcfun ("SDL_JoystickGetSerial" %sdl::joystick-get-serial)
               claw-utils:claw-string
               (%sdl::joystick (:pointer %sdl::joystick)))
+
+(declaim (inline %sdl::joystick-get-type))
 
 (cffi:defcfun ("SDL_JoystickGetType" %sdl::joystick-get-type)
               %sdl::joystick-type
               (%sdl::joystick (:pointer %sdl::joystick)))
 
+(declaim (inline %sdl::joystick-get-vendor))
+
 (cffi:defcfun ("SDL_JoystickGetVendor" %sdl::joystick-get-vendor)
               %sdl::uint16
               (%sdl::joystick (:pointer %sdl::joystick)))
+
+(declaim (inline %sdl::joystick-has-led))
 
 (cffi:defcfun ("SDL_JoystickHasLED" %sdl::joystick-has-led)
               %sdl::bool
               (%sdl::joystick (:pointer %sdl::joystick)))
 
+(declaim (inline %sdl::joystick-instance-id))
+
 (cffi:defcfun ("SDL_JoystickInstanceID" %sdl::joystick-instance-id)
               %sdl::joystick-id
               (%sdl::joystick (:pointer %sdl::joystick)))
+
+(declaim (inline %sdl::joystick-is-haptic))
 
 (cffi:defcfun ("SDL_JoystickIsHaptic" %sdl::joystick-is-haptic)
               :int
               (%sdl::joystick (:pointer %sdl::joystick)))
 
+(declaim (inline %sdl::joystick-is-virtual))
+
 (cffi:defcfun ("SDL_JoystickIsVirtual" %sdl::joystick-is-virtual)
               %sdl::bool
               (%sdl::device-index :int))
 
+(declaim (inline %sdl::joystick-name))
+
 (cffi:defcfun ("SDL_JoystickName" %sdl::joystick-name)
               claw-utils:claw-string
               (%sdl::joystick (:pointer %sdl::joystick)))
+
+(declaim (inline %sdl::joystick-name-for-index))
 
 (cffi:defcfun ("SDL_JoystickNameForIndex"
                %sdl::joystick-name-for-index)
               claw-utils:claw-string
               (%sdl::device-index :int))
 
+(declaim (inline %sdl::joystick-num-axes))
+
 (cffi:defcfun ("SDL_JoystickNumAxes" %sdl::joystick-num-axes)
               :int
               (%sdl::joystick (:pointer %sdl::joystick)))
+
+(declaim (inline %sdl::joystick-num-balls))
 
 (cffi:defcfun ("SDL_JoystickNumBalls" %sdl::joystick-num-balls)
               :int
               (%sdl::joystick (:pointer %sdl::joystick)))
 
+(declaim (inline %sdl::joystick-num-buttons))
+
 (cffi:defcfun ("SDL_JoystickNumButtons" %sdl::joystick-num-buttons)
               :int
               (%sdl::joystick (:pointer %sdl::joystick)))
+
+(declaim (inline %sdl::joystick-num-hats))
 
 (cffi:defcfun ("SDL_JoystickNumHats" %sdl::joystick-num-hats)
               :int
               (%sdl::joystick (:pointer %sdl::joystick)))
 
+(declaim (inline %sdl::joystick-open))
+
 (cffi:defcfun ("SDL_JoystickOpen" %sdl::joystick-open)
               (:pointer %sdl::joystick)
               (%sdl::device-index :int))
+
+(declaim (inline %sdl::joystick-rumble))
 
 (cffi:defcfun ("SDL_JoystickRumble" %sdl::joystick-rumble)
               :int
@@ -3612,6 +4344,8 @@
               (%sdl::low-frequency-rumble %sdl::uint16)
               (%sdl::high-frequency-rumble %sdl::uint16)
               (%sdl::duration-ms %sdl::uint32))
+
+(declaim (inline %sdl::joystick-rumble-triggers))
 
 (cffi:defcfun ("SDL_JoystickRumbleTriggers"
                %sdl::joystick-rumble-triggers)
@@ -3621,6 +4355,8 @@
               (%sdl::right-rumble %sdl::uint16)
               (%sdl::duration-ms %sdl::uint32))
 
+(declaim (inline %sdl::joystick-set-led))
+
 (cffi:defcfun ("SDL_JoystickSetLED" %sdl::joystick-set-led)
               :int
               (%sdl::joystick (:pointer %sdl::joystick))
@@ -3628,11 +4364,15 @@
               (%sdl::green %sdl::uint8)
               (%sdl::blue %sdl::uint8))
 
+(declaim (inline %sdl::joystick-set-player-index))
+
 (cffi:defcfun ("SDL_JoystickSetPlayerIndex"
                %sdl::joystick-set-player-index)
               :void
               (%sdl::joystick (:pointer %sdl::joystick))
               (%sdl::player-index :int))
+
+(declaim (inline %sdl::joystick-set-virtual-axis))
 
 (cffi:defcfun ("SDL_JoystickSetVirtualAxis"
                %sdl::joystick-set-virtual-axis)
@@ -3641,12 +4381,16 @@
               (%sdl::axis :int)
               (%sdl::value %sdl::sint16))
 
+(declaim (inline %sdl::joystick-set-virtual-button))
+
 (cffi:defcfun ("SDL_JoystickSetVirtualButton"
                %sdl::joystick-set-virtual-button)
               :int
               (%sdl::joystick (:pointer %sdl::joystick))
               (%sdl::button :int)
               (%sdl::value %sdl::uint8))
+
+(declaim (inline %sdl::joystick-set-virtual-hat))
 
 (cffi:defcfun ("SDL_JoystickSetVirtualHat"
                %sdl::joystick-set-virtual-hat)
@@ -3655,9 +4399,13 @@
               (%sdl::hat :int)
               (%sdl::value %sdl::uint8))
 
+(declaim (inline %sdl::joystick-update))
+
 (cffi:defcfun ("SDL_JoystickUpdate" %sdl::joystick-update) :void)
 
 (cffi:defctype %sdl::sint64 :long)
+
+(declaim (inline %sdl::linux-set-thread-priority))
 
 (cffi:defcfun ("SDL_LinuxSetThreadPriority"
                %sdl::linux-set-thread-priority)
@@ -3665,20 +4413,28 @@
               (%sdl::thread-id %sdl::sint64)
               (%sdl::priority :int))
 
+(declaim (inline %sdl::load-bmp-rw))
+
 (cffi:defcfun ("SDL_LoadBMP_RW" %sdl::load-bmp-rw)
               (:pointer %sdl::surface)
               (%sdl::src (:pointer %sdl::r-wops))
               (%sdl::freesrc :int))
+
+(declaim (inline %sdl::load-dollar-templates))
 
 (cffi:defcfun ("SDL_LoadDollarTemplates" %sdl::load-dollar-templates)
               :int
               (%sdl::touch-id %sdl::touch-id)
               (%sdl::src (:pointer %sdl::r-wops)))
 
+(declaim (inline %sdl::load-file))
+
 (cffi:defcfun ("SDL_LoadFile" %sdl::load-file)
               (:pointer :void)
               (%sdl::file claw-utils:claw-string)
               (%sdl::datasize (:pointer %sdl::size-t)))
+
+(declaim (inline %sdl::load-file-rw))
 
 (cffi:defcfun ("SDL_LoadFile_RW" %sdl::load-file-rw)
               (:pointer :void)
@@ -3686,10 +4442,14 @@
               (%sdl::datasize (:pointer %sdl::size-t))
               (%sdl::freesrc :int))
 
+(declaim (inline %sdl::load-function))
+
 (cffi:defcfun ("SDL_LoadFunction" %sdl::load-function)
               (:pointer :void)
               (%sdl::handle (:pointer :void))
               (%sdl::name claw-utils:claw-string))
+
+(declaim (inline %sdl::load-object))
 
 (cffi:defcfun ("SDL_LoadObject" %sdl::load-object)
               (:pointer :void)
@@ -3710,6 +4470,8 @@
 
 (cffi:defctype %sdl::audio-spec (:struct %sdl::audio-spec))
 
+(declaim (inline %sdl::load-wav-rw))
+
 (cffi:defcfun ("SDL_LoadWAV_RW" %sdl::load-wav-rw)
               (:pointer %sdl::audio-spec)
               (%sdl::src (:pointer %sdl::r-wops))
@@ -3718,23 +4480,37 @@
               (%sdl::audio-buf (:pointer (:pointer %sdl::uint8)))
               (%sdl::audio-len (:pointer %sdl::uint32)))
 
+(declaim (inline %sdl::lock-audio))
+
 (cffi:defcfun ("SDL_LockAudio" %sdl::lock-audio) :void)
+
+(declaim (inline %sdl::lock-audio-device))
 
 (cffi:defcfun ("SDL_LockAudioDevice" %sdl::lock-audio-device)
               :void
               (%sdl::dev %sdl::audio-device-id))
 
+(declaim (inline %sdl::lock-joysticks))
+
 (cffi:defcfun ("SDL_LockJoysticks" %sdl::lock-joysticks) :void)
+
+(declaim (inline %sdl::lock-mutex))
 
 (cffi:defcfun ("SDL_LockMutex" %sdl::lock-mutex)
               :int
               (%sdl::mutex (:pointer %sdl::mutex)))
 
+(declaim (inline %sdl::lock-sensors))
+
 (cffi:defcfun ("SDL_LockSensors" %sdl::lock-sensors) :void)
+
+(declaim (inline %sdl::lock-surface))
 
 (cffi:defcfun ("SDL_LockSurface" %sdl::lock-surface)
               :int
               (%sdl::surface (:pointer %sdl::surface)))
+
+(declaim (inline %sdl::lock-texture))
 
 (cffi:defcfun ("SDL_LockTexture" %sdl::lock-texture)
               :int
@@ -3743,6 +4519,8 @@
               (%sdl::pixels (:pointer (:pointer :void)))
               (%sdl::pitch (:pointer :int)))
 
+(declaim (inline %sdl::lock-texture-to-surface))
+
 (cffi:defcfun ("SDL_LockTextureToSurface"
                %sdl::lock-texture-to-surface)
               :int
@@ -3750,10 +4528,14 @@
               (%sdl::rect (:pointer %sdl::rect))
               (%sdl::surface (:pointer (:pointer %sdl::surface))))
 
+(declaim (inline %sdl::log))
+
 (cffi:defcfun ("SDL_Log" %sdl::log)
               :void
               (%sdl::fmt claw-utils:claw-string)
               &rest)
+
+(declaim (inline %sdl::log-critical))
 
 (cffi:defcfun ("SDL_LogCritical" %sdl::log-critical)
               :void
@@ -3761,11 +4543,15 @@
               (%sdl::fmt claw-utils:claw-string)
               &rest)
 
+(declaim (inline %sdl::log-debug))
+
 (cffi:defcfun ("SDL_LogDebug" %sdl::log-debug)
               :void
               (%sdl::category :int)
               (%sdl::fmt claw-utils:claw-string)
               &rest)
+
+(declaim (inline %sdl::log-error))
 
 (cffi:defcfun ("SDL_LogError" %sdl::log-error)
               :void
@@ -3774,6 +4560,8 @@
               &rest)
 
 (cffi:defctype %sdl::log-output-function (:pointer :pointer))
+
+(declaim (inline %sdl::log-get-output-function))
 
 (cffi:defcfun ("SDL_LogGetOutputFunction"
                %sdl::log-get-output-function)
@@ -3793,15 +4581,21 @@
 
 (cffi:defctype %sdl::log-priority %sdl::|C:@EA@SDL-LOG-PRIORITY|)
 
+(declaim (inline %sdl::log-get-priority))
+
 (cffi:defcfun ("SDL_LogGetPriority" %sdl::log-get-priority)
               %sdl::log-priority
               (%sdl::category :int))
+
+(declaim (inline %sdl::log-info))
 
 (cffi:defcfun ("SDL_LogInfo" %sdl::log-info)
               :void
               (%sdl::category :int)
               (%sdl::fmt claw-utils:claw-string)
               &rest)
+
+(declaim (inline %sdl::log-message))
 
 (cffi:defcfun ("SDL_LogMessage" %sdl::log-message)
               :void
@@ -3818,6 +4612,8 @@
 
 (cffi:defctype %sdl::va-list (:array (:struct %sdl::%%va-list-tag) 1))
 
+(declaim (inline %sdl::log-message-v))
+
 (cffi:defcfun ("SDL_LogMessageV" %sdl::log-message-v)
               :void
               (%sdl::category :int)
@@ -3825,12 +4621,18 @@
               (%sdl::fmt claw-utils:claw-string)
               (%sdl::ap %sdl::va-list))
 
+(declaim (inline %sdl::log-reset-priorities))
+
 (cffi:defcfun ("SDL_LogResetPriorities" %sdl::log-reset-priorities)
               :void)
+
+(declaim (inline %sdl::log-set-all-priority))
 
 (cffi:defcfun ("SDL_LogSetAllPriority" %sdl::log-set-all-priority)
               :void
               (%sdl::priority %sdl::log-priority))
+
+(declaim (inline %sdl::log-set-output-function))
 
 (cffi:defcfun ("SDL_LogSetOutputFunction"
                %sdl::log-set-output-function)
@@ -3838,10 +4640,14 @@
               (%sdl::callback %sdl::log-output-function)
               (%sdl::userdata (:pointer :void)))
 
+(declaim (inline %sdl::log-set-priority))
+
 (cffi:defcfun ("SDL_LogSetPriority" %sdl::log-set-priority)
               :void
               (%sdl::category :int)
               (%sdl::priority %sdl::log-priority))
+
+(declaim (inline %sdl::log-verbose))
 
 (cffi:defcfun ("SDL_LogVerbose" %sdl::log-verbose)
               :void
@@ -3849,11 +4655,15 @@
               (%sdl::fmt claw-utils:claw-string)
               &rest)
 
+(declaim (inline %sdl::log-warn))
+
 (cffi:defcfun ("SDL_LogWarn" %sdl::log-warn)
               :void
               (%sdl::category :int)
               (%sdl::fmt claw-utils:claw-string)
               &rest)
+
+(declaim (inline %sdl::lower-blit))
 
 (cffi:defcfun ("SDL_LowerBlit" %sdl::lower-blit)
               :int
@@ -3862,12 +4672,16 @@
               (%sdl::dst (:pointer %sdl::surface))
               (%sdl::dstrect (:pointer %sdl::rect)))
 
+(declaim (inline %sdl::lower-blit-scaled))
+
 (cffi:defcfun ("SDL_LowerBlitScaled" %sdl::lower-blit-scaled)
               :int
               (%sdl::src (:pointer %sdl::surface))
               (%sdl::srcrect (:pointer %sdl::rect))
               (%sdl::dst (:pointer %sdl::surface))
               (%sdl::dstrect (:pointer %sdl::rect)))
+
+(declaim (inline %sdl::map-rgb))
 
 (cffi:defcfun ("SDL_MapRGB" %sdl::map-rgb)
               %sdl::uint32
@@ -3876,6 +4690,8 @@
               (%sdl::g %sdl::uint8)
               (%sdl::b %sdl::uint8))
 
+(declaim (inline %sdl::map-rgba))
+
 (cffi:defcfun ("SDL_MapRGBA" %sdl::map-rgba)
               %sdl::uint32
               (%sdl::format (:pointer %sdl::pixel-format))
@@ -3883,6 +4699,8 @@
               (%sdl::g %sdl::uint8)
               (%sdl::b %sdl::uint8)
               (%sdl::a %sdl::uint8))
+
+(declaim (inline %sdl::masks-to-pixel-format-enum))
 
 (cffi:defcfun ("SDL_MasksToPixelFormatEnum"
                %sdl::masks-to-pixel-format-enum)
@@ -3893,13 +4711,19 @@
               (%sdl::bmask %sdl::uint32)
               (%sdl::amask %sdl::uint32))
 
+(declaim (inline %sdl::maximize-window))
+
 (cffi:defcfun ("SDL_MaximizeWindow" %sdl::maximize-window)
               :void
               (%sdl::window (:pointer %sdl::window)))
 
+(declaim (inline %sdl::memory-barrier-acquire-function))
+
 (cffi:defcfun ("SDL_MemoryBarrierAcquireFunction"
                %sdl::memory-barrier-acquire-function)
               :void)
+
+(declaim (inline %sdl::memory-barrier-release-function))
 
 (cffi:defcfun ("SDL_MemoryBarrierReleaseFunction"
                %sdl::memory-barrier-release-function)
@@ -3907,13 +4731,19 @@
 
 (cffi:defctype %sdl::metal-view (:pointer :void))
 
+(declaim (inline %sdl::metal-create-view))
+
 (cffi:defcfun ("SDL_Metal_CreateView" %sdl::metal-create-view)
               %sdl::metal-view
               (%sdl::window (:pointer %sdl::window)))
 
+(declaim (inline %sdl::metal-destroy-view))
+
 (cffi:defcfun ("SDL_Metal_DestroyView" %sdl::metal-destroy-view)
               :void
               (%sdl::view %sdl::metal-view))
+
+(declaim (inline %sdl::metal-get-drawable-size))
 
 (cffi:defcfun ("SDL_Metal_GetDrawableSize"
                %sdl::metal-get-drawable-size)
@@ -3922,13 +4752,19 @@
               (%sdl::w (:pointer :int))
               (%sdl::h (:pointer :int)))
 
+(declaim (inline %sdl::metal-get-layer))
+
 (cffi:defcfun ("SDL_Metal_GetLayer" %sdl::metal-get-layer)
               (:pointer :void)
               (%sdl::view %sdl::metal-view))
 
+(declaim (inline %sdl::minimize-window))
+
 (cffi:defcfun ("SDL_MinimizeWindow" %sdl::minimize-window)
               :void
               (%sdl::window (:pointer %sdl::window)))
+
+(declaim (inline %sdl::mix-audio))
 
 (cffi:defcfun ("SDL_MixAudio" %sdl::mix-audio)
               :void
@@ -3936,6 +4772,8 @@
               (%sdl::src (:pointer %sdl::uint8))
               (%sdl::len %sdl::uint32)
               (%sdl::volume :int))
+
+(declaim (inline %sdl::mix-audio-format))
 
 (cffi:defcfun ("SDL_MixAudioFormat" %sdl::mix-audio-format)
               :void
@@ -3945,7 +4783,11 @@
               (%sdl::len %sdl::uint32)
               (%sdl::volume :int))
 
+(declaim (inline %sdl::mouse-is-haptic))
+
 (cffi:defcfun ("SDL_MouseIsHaptic" %sdl::mouse-is-haptic) :int)
+
+(declaim (inline %sdl::new-audio-stream))
 
 (cffi:defcfun ("SDL_NewAudioStream" %sdl::new-audio-stream)
               (:pointer %sdl::audio-stream)
@@ -3956,40 +4798,62 @@
               (%sdl::dst-channels %sdl::uint8)
               (%sdl::dst-rate :int))
 
+(declaim (inline %sdl::num-haptics))
+
 (cffi:defcfun ("SDL_NumHaptics" %sdl::num-haptics) :int)
+
+(declaim (inline %sdl::num-joysticks))
 
 (cffi:defcfun ("SDL_NumJoysticks" %sdl::num-joysticks) :int)
 
+(declaim (inline %sdl::num-sensors))
+
 (cffi:defcfun ("SDL_NumSensors" %sdl::num-sensors) :int)
+
+(declaim (inline %sdl::on-application-did-become-active))
 
 (cffi:defcfun ("SDL_OnApplicationDidBecomeActive"
                %sdl::on-application-did-become-active)
               :void)
 
+(declaim (inline %sdl::on-application-did-enter-background))
+
 (cffi:defcfun ("SDL_OnApplicationDidEnterBackground"
                %sdl::on-application-did-enter-background)
               :void)
+
+(declaim (inline %sdl::on-application-did-receive-memory-warning))
 
 (cffi:defcfun ("SDL_OnApplicationDidReceiveMemoryWarning"
                %sdl::on-application-did-receive-memory-warning)
               :void)
 
+(declaim (inline %sdl::on-application-will-enter-foreground))
+
 (cffi:defcfun ("SDL_OnApplicationWillEnterForeground"
                %sdl::on-application-will-enter-foreground)
               :void)
+
+(declaim (inline %sdl::on-application-will-resign-active))
 
 (cffi:defcfun ("SDL_OnApplicationWillResignActive"
                %sdl::on-application-will-resign-active)
               :void)
 
+(declaim (inline %sdl::on-application-will-terminate))
+
 (cffi:defcfun ("SDL_OnApplicationWillTerminate"
                %sdl::on-application-will-terminate)
               :void)
+
+(declaim (inline %sdl::open-audio))
 
 (cffi:defcfun ("SDL_OpenAudio" %sdl::open-audio)
               :int
               (%sdl::desired (:pointer %sdl::audio-spec))
               (%sdl::obtained (:pointer %sdl::audio-spec)))
+
+(declaim (inline %sdl::open-audio-device))
 
 (cffi:defcfun ("SDL_OpenAudioDevice" %sdl::open-audio-device)
               %sdl::audio-device-id
@@ -3999,13 +4863,19 @@
               (%sdl::obtained (:pointer %sdl::audio-spec))
               (%sdl::allowed-changes :int))
 
+(declaim (inline %sdl::open-url))
+
 (cffi:defcfun ("SDL_OpenURL" %sdl::open-url)
               :int
               (%sdl::url claw-utils:claw-string))
 
+(declaim (inline %sdl::pause-audio))
+
 (cffi:defcfun ("SDL_PauseAudio" %sdl::pause-audio)
               :void
               (%sdl::pause-on :int))
+
+(declaim (inline %sdl::pause-audio-device))
 
 (cffi:defcfun ("SDL_PauseAudioDevice" %sdl::pause-audio-device)
               :void
@@ -4917,6 +5787,8 @@
 
 (cffi:defctype %sdl::eventaction %sdl::|C:@EA@SDL-EVENTACTION|)
 
+(declaim (inline %sdl::peep-events))
+
 (cffi:defcfun ("SDL_PeepEvents" %sdl::peep-events)
               :int
               (%sdl::events (:pointer %sdl::event))
@@ -4924,6 +5796,8 @@
               (%sdl::action %sdl::eventaction)
               (%sdl::min-type %sdl::uint32)
               (%sdl::max-type %sdl::uint32))
+
+(declaim (inline %sdl::pixel-format-enum-to-masks))
 
 (cffi:defcfun ("SDL_PixelFormatEnumToMasks"
                %sdl::pixel-format-enum-to-masks)
@@ -4935,15 +5809,23 @@
               (%sdl::bmask (:pointer %sdl::uint32))
               (%sdl::amask (:pointer %sdl::uint32)))
 
+(declaim (inline %sdl::poll-event))
+
 (cffi:defcfun ("SDL_PollEvent" %sdl::poll-event)
               :int
               (%sdl::event (:pointer %sdl::event)))
 
+(declaim (inline %sdl::pump-events))
+
 (cffi:defcfun ("SDL_PumpEvents" %sdl::pump-events) :void)
+
+(declaim (inline %sdl::push-event))
 
 (cffi:defcfun ("SDL_PushEvent" %sdl::push-event)
               :int
               (%sdl::event (:pointer %sdl::event)))
+
+(declaim (inline %sdl::query-texture))
 
 (cffi:defcfun ("SDL_QueryTexture" %sdl::query-texture)
               :int
@@ -4953,41 +5835,59 @@
               (%sdl::w (:pointer :int))
               (%sdl::h (:pointer :int)))
 
+(declaim (inline %sdl::queue-audio))
+
 (cffi:defcfun ("SDL_QueueAudio" %sdl::queue-audio)
               :int
               (%sdl::dev %sdl::audio-device-id)
               (%sdl::data (:pointer :void))
               (%sdl::len %sdl::uint32))
 
+(declaim (inline %sdl::quit))
+
 (cffi:defcfun ("SDL_Quit" %sdl::quit) :void)
+
+(declaim (inline %sdl::quit-sub-system))
 
 (cffi:defcfun ("SDL_QuitSubSystem" %sdl::quit-sub-system)
               :void
               (%sdl::flags %sdl::uint32))
+
+(declaim (inline %sdl::rw-from-const-mem))
 
 (cffi:defcfun ("SDL_RWFromConstMem" %sdl::rw-from-const-mem)
               (:pointer %sdl::r-wops)
               (%sdl::mem (:pointer :void))
               (%sdl::size :int))
 
+(declaim (inline %sdl::rw-from-fp))
+
 (cffi:defcfun ("SDL_RWFromFP" %sdl::rw-from-fp)
               (:pointer %sdl::r-wops)
               (%sdl::fp (:pointer %sdl::file))
               (%sdl::autoclose %sdl::bool))
+
+(declaim (inline %sdl::rw-from-file))
 
 (cffi:defcfun ("SDL_RWFromFile" %sdl::rw-from-file)
               (:pointer %sdl::r-wops)
               (%sdl::file claw-utils:claw-string)
               (%sdl::mode claw-utils:claw-string))
 
+(declaim (inline %sdl::rw-from-mem))
+
 (cffi:defcfun ("SDL_RWFromMem" %sdl::rw-from-mem)
               (:pointer %sdl::r-wops)
               (%sdl::mem (:pointer :void))
               (%sdl::size :int))
 
+(declaim (inline %sdl::r-wclose))
+
 (cffi:defcfun ("SDL_RWclose" %sdl::r-wclose)
               :int
               (%sdl::context (:pointer %sdl::r-wops)))
+
+(declaim (inline %sdl::r-wread))
 
 (cffi:defcfun ("SDL_RWread" %sdl::r-wread)
               %sdl::size-t
@@ -4996,19 +5896,27 @@
               (%sdl::size %sdl::size-t)
               (%sdl::maxnum %sdl::size-t))
 
+(declaim (inline %sdl::r-wseek))
+
 (cffi:defcfun ("SDL_RWseek" %sdl::r-wseek)
               %sdl::sint64
               (%sdl::context (:pointer %sdl::r-wops))
               (%sdl::offset %sdl::sint64)
               (%sdl::whence :int))
 
+(declaim (inline %sdl::r-wsize))
+
 (cffi:defcfun ("SDL_RWsize" %sdl::r-wsize)
               %sdl::sint64
               (%sdl::context (:pointer %sdl::r-wops)))
 
+(declaim (inline %sdl::r-wtell))
+
 (cffi:defcfun ("SDL_RWtell" %sdl::r-wtell)
               %sdl::sint64
               (%sdl::context (:pointer %sdl::r-wops)))
+
+(declaim (inline %sdl::r-wwrite))
 
 (cffi:defcfun ("SDL_RWwrite" %sdl::r-wwrite)
               %sdl::size-t
@@ -5017,53 +5925,79 @@
               (%sdl::size %sdl::size-t)
               (%sdl::num %sdl::size-t))
 
+(declaim (inline %sdl::raise-window))
+
 (cffi:defcfun ("SDL_RaiseWindow" %sdl::raise-window)
               :void
               (%sdl::window (:pointer %sdl::window)))
+
+(declaim (inline %sdl::read-be16))
 
 (cffi:defcfun ("SDL_ReadBE16" %sdl::read-be16)
               %sdl::uint16
               (%sdl::src (:pointer %sdl::r-wops)))
 
+(declaim (inline %sdl::read-be32))
+
 (cffi:defcfun ("SDL_ReadBE32" %sdl::read-be32)
               %sdl::uint32
               (%sdl::src (:pointer %sdl::r-wops)))
+
+(declaim (inline %sdl::read-be64))
 
 (cffi:defcfun ("SDL_ReadBE64" %sdl::read-be64)
               %sdl::uint64
               (%sdl::src (:pointer %sdl::r-wops)))
 
+(declaim (inline %sdl::read-le16))
+
 (cffi:defcfun ("SDL_ReadLE16" %sdl::read-le16)
               %sdl::uint16
               (%sdl::src (:pointer %sdl::r-wops)))
+
+(declaim (inline %sdl::read-le32))
 
 (cffi:defcfun ("SDL_ReadLE32" %sdl::read-le32)
               %sdl::uint32
               (%sdl::src (:pointer %sdl::r-wops)))
 
+(declaim (inline %sdl::read-le64))
+
 (cffi:defcfun ("SDL_ReadLE64" %sdl::read-le64)
               %sdl::uint64
               (%sdl::src (:pointer %sdl::r-wops)))
+
+(declaim (inline %sdl::read-u8))
 
 (cffi:defcfun ("SDL_ReadU8" %sdl::read-u8)
               %sdl::uint8
               (%sdl::src (:pointer %sdl::r-wops)))
 
+(declaim (inline %sdl::record-gesture))
+
 (cffi:defcfun ("SDL_RecordGesture" %sdl::record-gesture)
               :int
               (%sdl::touch-id %sdl::touch-id))
+
+(declaim (inline %sdl::register-events))
 
 (cffi:defcfun ("SDL_RegisterEvents" %sdl::register-events)
               %sdl::uint32
               (%sdl::numevents :int))
 
+(declaim (inline %sdl::remove-timer))
+
 (cffi:defcfun ("SDL_RemoveTimer" %sdl::remove-timer)
               %sdl::bool
               (%sdl::id %sdl::timer-id))
 
+(declaim (inline %sdl::render-clear))
+
 (cffi:defcfun ("SDL_RenderClear" %sdl::render-clear)
               :int
               (%sdl::renderer (:pointer %sdl::renderer)))
+
+(declaim (inline %sdl::render-copy))
 
 (cffi:defcfun ("SDL_RenderCopy" %sdl::render-copy)
               :int
@@ -5079,6 +6013,8 @@
                (:vertical 2))
 
 (cffi:defctype %sdl::renderer-flip %sdl::|C:@EA@SDL-RENDERER-FLIP|)
+
+(declaim (inline %sdl::render-copy-ex))
 
 (cffi:defcfun ("SDL_RenderCopyEx" %sdl::render-copy-ex)
               :int
@@ -5104,6 +6040,8 @@
 
 (cffi:defctype %sdl::f-point (:struct %sdl::f-point))
 
+(declaim (inline %sdl::render-copy-ex-f))
+
 (cffi:defcfun ("SDL_RenderCopyExF" %sdl::render-copy-ex-f)
               :int
               (%sdl::renderer (:pointer %sdl::renderer))
@@ -5114,12 +6052,16 @@
               (%sdl::center (:pointer %sdl::f-point))
               (%sdl::flip %sdl::renderer-flip))
 
+(declaim (inline %sdl::render-copy-f))
+
 (cffi:defcfun ("SDL_RenderCopyF" %sdl::render-copy-f)
               :int
               (%sdl::renderer (:pointer %sdl::renderer))
               (%sdl::texture (:pointer %sdl::texture))
               (%sdl::srcrect (:pointer %sdl::rect))
               (%sdl::dstrect (:pointer %sdl::f-rect)))
+
+(declaim (inline %sdl::render-draw-line))
 
 (cffi:defcfun ("SDL_RenderDrawLine" %sdl::render-draw-line)
               :int
@@ -5129,6 +6071,8 @@
               (%sdl::x2 :int)
               (%sdl::y2 :int))
 
+(declaim (inline %sdl::render-draw-line-f))
+
 (cffi:defcfun ("SDL_RenderDrawLineF" %sdl::render-draw-line-f)
               :int
               (%sdl::renderer (:pointer %sdl::renderer))
@@ -5137,11 +6081,15 @@
               (%sdl::x2 :float)
               (%sdl::y2 :float))
 
+(declaim (inline %sdl::render-draw-lines))
+
 (cffi:defcfun ("SDL_RenderDrawLines" %sdl::render-draw-lines)
               :int
               (%sdl::renderer (:pointer %sdl::renderer))
               (%sdl::points (:pointer %sdl::point))
               (%sdl::count :int))
+
+(declaim (inline %sdl::render-draw-lines-f))
 
 (cffi:defcfun ("SDL_RenderDrawLinesF" %sdl::render-draw-lines-f)
               :int
@@ -5149,11 +6097,15 @@
               (%sdl::points (:pointer %sdl::f-point))
               (%sdl::count :int))
 
+(declaim (inline %sdl::render-draw-point))
+
 (cffi:defcfun ("SDL_RenderDrawPoint" %sdl::render-draw-point)
               :int
               (%sdl::renderer (:pointer %sdl::renderer))
               (%sdl::x :int)
               (%sdl::y :int))
+
+(declaim (inline %sdl::render-draw-point-f))
 
 (cffi:defcfun ("SDL_RenderDrawPointF" %sdl::render-draw-point-f)
               :int
@@ -5161,11 +6113,15 @@
               (%sdl::x :float)
               (%sdl::y :float))
 
+(declaim (inline %sdl::render-draw-points))
+
 (cffi:defcfun ("SDL_RenderDrawPoints" %sdl::render-draw-points)
               :int
               (%sdl::renderer (:pointer %sdl::renderer))
               (%sdl::points (:pointer %sdl::point))
               (%sdl::count :int))
+
+(declaim (inline %sdl::render-draw-points-f))
 
 (cffi:defcfun ("SDL_RenderDrawPointsF" %sdl::render-draw-points-f)
               :int
@@ -5173,15 +6129,21 @@
               (%sdl::points (:pointer %sdl::f-point))
               (%sdl::count :int))
 
+(declaim (inline %sdl::render-draw-rect))
+
 (cffi:defcfun ("SDL_RenderDrawRect" %sdl::render-draw-rect)
               :int
               (%sdl::renderer (:pointer %sdl::renderer))
               (%sdl::rect (:pointer %sdl::rect)))
 
+(declaim (inline %sdl::render-draw-rect-f))
+
 (cffi:defcfun ("SDL_RenderDrawRectF" %sdl::render-draw-rect-f)
               :int
               (%sdl::renderer (:pointer %sdl::renderer))
               (%sdl::rect (:pointer %sdl::f-rect)))
+
+(declaim (inline %sdl::render-draw-rects))
 
 (cffi:defcfun ("SDL_RenderDrawRects" %sdl::render-draw-rects)
               :int
@@ -5189,21 +6151,29 @@
               (%sdl::rects (:pointer %sdl::rect))
               (%sdl::count :int))
 
+(declaim (inline %sdl::render-draw-rects-f))
+
 (cffi:defcfun ("SDL_RenderDrawRectsF" %sdl::render-draw-rects-f)
               :int
               (%sdl::renderer (:pointer %sdl::renderer))
               (%sdl::rects (:pointer %sdl::f-rect))
               (%sdl::count :int))
 
+(declaim (inline %sdl::render-fill-rect))
+
 (cffi:defcfun ("SDL_RenderFillRect" %sdl::render-fill-rect)
               :int
               (%sdl::renderer (:pointer %sdl::renderer))
               (%sdl::rect (:pointer %sdl::rect)))
 
+(declaim (inline %sdl::render-fill-rect-f))
+
 (cffi:defcfun ("SDL_RenderFillRectF" %sdl::render-fill-rect-f)
               :int
               (%sdl::renderer (:pointer %sdl::renderer))
               (%sdl::rect (:pointer %sdl::f-rect)))
+
+(declaim (inline %sdl::render-fill-rects))
 
 (cffi:defcfun ("SDL_RenderFillRects" %sdl::render-fill-rects)
               :int
@@ -5211,25 +6181,35 @@
               (%sdl::rects (:pointer %sdl::rect))
               (%sdl::count :int))
 
+(declaim (inline %sdl::render-fill-rects-f))
+
 (cffi:defcfun ("SDL_RenderFillRectsF" %sdl::render-fill-rects-f)
               :int
               (%sdl::renderer (:pointer %sdl::renderer))
               (%sdl::rects (:pointer %sdl::f-rect))
               (%sdl::count :int))
 
+(declaim (inline %sdl::render-flush))
+
 (cffi:defcfun ("SDL_RenderFlush" %sdl::render-flush)
               :int
               (%sdl::renderer (:pointer %sdl::renderer)))
+
+(declaim (inline %sdl::render-get-clip-rect))
 
 (cffi:defcfun ("SDL_RenderGetClipRect" %sdl::render-get-clip-rect)
               :void
               (%sdl::renderer (:pointer %sdl::renderer))
               (%sdl::rect (:pointer %sdl::rect)))
 
+(declaim (inline %sdl::render-get-integer-scale))
+
 (cffi:defcfun ("SDL_RenderGetIntegerScale"
                %sdl::render-get-integer-scale)
               %sdl::bool
               (%sdl::renderer (:pointer %sdl::renderer)))
+
+(declaim (inline %sdl::render-get-logical-size))
 
 (cffi:defcfun ("SDL_RenderGetLogicalSize"
                %sdl::render-get-logical-size)
@@ -5238,15 +6218,21 @@
               (%sdl::w (:pointer :int))
               (%sdl::h (:pointer :int)))
 
+(declaim (inline %sdl::render-get-metal-command-encoder))
+
 (cffi:defcfun ("SDL_RenderGetMetalCommandEncoder"
                %sdl::render-get-metal-command-encoder)
               (:pointer :void)
               (%sdl::renderer (:pointer %sdl::renderer)))
 
+(declaim (inline %sdl::render-get-metal-layer))
+
 (cffi:defcfun ("SDL_RenderGetMetalLayer"
                %sdl::render-get-metal-layer)
               (:pointer :void)
               (%sdl::renderer (:pointer %sdl::renderer)))
+
+(declaim (inline %sdl::render-get-scale))
 
 (cffi:defcfun ("SDL_RenderGetScale" %sdl::render-get-scale)
               :void
@@ -5254,19 +6240,27 @@
               (%sdl::scale-x (:pointer :float))
               (%sdl::scale-y (:pointer :float)))
 
+(declaim (inline %sdl::render-get-viewport))
+
 (cffi:defcfun ("SDL_RenderGetViewport" %sdl::render-get-viewport)
               :void
               (%sdl::renderer (:pointer %sdl::renderer))
               (%sdl::rect (:pointer %sdl::rect)))
+
+(declaim (inline %sdl::render-is-clip-enabled))
 
 (cffi:defcfun ("SDL_RenderIsClipEnabled"
                %sdl::render-is-clip-enabled)
               %sdl::bool
               (%sdl::renderer (:pointer %sdl::renderer)))
 
+(declaim (inline %sdl::render-present))
+
 (cffi:defcfun ("SDL_RenderPresent" %sdl::render-present)
               :void
               (%sdl::renderer (:pointer %sdl::renderer)))
+
+(declaim (inline %sdl::render-read-pixels))
 
 (cffi:defcfun ("SDL_RenderReadPixels" %sdl::render-read-pixels)
               :int
@@ -5276,16 +6270,22 @@
               (%sdl::pixels (:pointer :void))
               (%sdl::pitch :int))
 
+(declaim (inline %sdl::render-set-clip-rect))
+
 (cffi:defcfun ("SDL_RenderSetClipRect" %sdl::render-set-clip-rect)
               :int
               (%sdl::renderer (:pointer %sdl::renderer))
               (%sdl::rect (:pointer %sdl::rect)))
+
+(declaim (inline %sdl::render-set-integer-scale))
 
 (cffi:defcfun ("SDL_RenderSetIntegerScale"
                %sdl::render-set-integer-scale)
               :int
               (%sdl::renderer (:pointer %sdl::renderer))
               (%sdl::enable %sdl::bool))
+
+(declaim (inline %sdl::render-set-logical-size))
 
 (cffi:defcfun ("SDL_RenderSetLogicalSize"
                %sdl::render-set-logical-size)
@@ -5294,16 +6294,22 @@
               (%sdl::w :int)
               (%sdl::h :int))
 
+(declaim (inline %sdl::render-set-scale))
+
 (cffi:defcfun ("SDL_RenderSetScale" %sdl::render-set-scale)
               :int
               (%sdl::renderer (:pointer %sdl::renderer))
               (%sdl::scale-x :float)
               (%sdl::scale-y :float))
 
+(declaim (inline %sdl::render-set-viewport))
+
 (cffi:defcfun ("SDL_RenderSetViewport" %sdl::render-set-viewport)
               :int
               (%sdl::renderer (:pointer %sdl::renderer))
               (%sdl::rect (:pointer %sdl::rect)))
+
+(declaim (inline %sdl::render-target-supported))
 
 (cffi:defcfun ("SDL_RenderTargetSupported"
                %sdl::render-target-supported)
@@ -5320,6 +6326,8 @@
 
 (cffi:defctype %sdl::assert-state %sdl::|C:@EA@SDL-ASSERT-STATE|)
 
+(declaim (inline %sdl::report-assertion))
+
 (cffi:defcfun ("SDL_ReportAssertion" %sdl::report-assertion)
               %sdl::assert-state
               (%sdl::arg0 (:pointer %sdl::assert-data))
@@ -5327,34 +6335,50 @@
               (%sdl::arg2 claw-utils:claw-string)
               (%sdl::arg3 :int))
 
+(declaim (inline %sdl::reset-assertion-report))
+
 (cffi:defcfun ("SDL_ResetAssertionReport"
                %sdl::reset-assertion-report)
               :void)
+
+(declaim (inline %sdl::restore-window))
 
 (cffi:defcfun ("SDL_RestoreWindow" %sdl::restore-window)
               :void
               (%sdl::window (:pointer %sdl::window)))
 
+(declaim (inline %sdl::simd-alloc))
+
 (cffi:defcfun ("SDL_SIMDAlloc" %sdl::simd-alloc)
               (:pointer :void)
               (%sdl::len %sdl::size-t))
+
+(declaim (inline %sdl::simd-free))
 
 (cffi:defcfun ("SDL_SIMDFree" %sdl::simd-free)
               :void
               (%sdl::ptr (:pointer :void)))
 
+(declaim (inline %sdl::simd-get-alignment))
+
 (cffi:defcfun ("SDL_SIMDGetAlignment" %sdl::simd-get-alignment)
               %sdl::size-t)
+
+(declaim (inline %sdl::simd-realloc))
 
 (cffi:defcfun ("SDL_SIMDRealloc" %sdl::simd-realloc)
               (:pointer :void)
               (%sdl::mem (:pointer :void))
               (%sdl::len %sdl::size-t))
 
+(declaim (inline %sdl::save-all-dollar-templates))
+
 (cffi:defcfun ("SDL_SaveAllDollarTemplates"
                %sdl::save-all-dollar-templates)
               :int
               (%sdl::dst (:pointer %sdl::r-wops)))
+
+(declaim (inline %sdl::save-bmp-rw))
 
 (cffi:defcfun ("SDL_SaveBMP_RW" %sdl::save-bmp-rw)
               :int
@@ -5362,26 +6386,38 @@
               (%sdl::dst (:pointer %sdl::r-wops))
               (%sdl::freedst :int))
 
+(declaim (inline %sdl::save-dollar-template))
+
 (cffi:defcfun ("SDL_SaveDollarTemplate" %sdl::save-dollar-template)
               :int
               (%sdl::gesture-id %sdl::gesture-id)
               (%sdl::dst (:pointer %sdl::r-wops)))
 
+(declaim (inline %sdl::sem-post))
+
 (cffi:defcfun ("SDL_SemPost" %sdl::sem-post)
               :int
               (%sdl::sem (:pointer %sdl::sem)))
+
+(declaim (inline %sdl::sem-try-wait))
 
 (cffi:defcfun ("SDL_SemTryWait" %sdl::sem-try-wait)
               :int
               (%sdl::sem (:pointer %sdl::sem)))
 
+(declaim (inline %sdl::sem-value))
+
 (cffi:defcfun ("SDL_SemValue" %sdl::sem-value)
               %sdl::uint32
               (%sdl::sem (:pointer %sdl::sem)))
 
+(declaim (inline %sdl::sem-wait))
+
 (cffi:defcfun ("SDL_SemWait" %sdl::sem-wait)
               :int
               (%sdl::sem (:pointer %sdl::sem)))
+
+(declaim (inline %sdl::sem-wait-timeout))
 
 (cffi:defcfun ("SDL_SemWaitTimeout" %sdl::sem-wait-timeout)
               :int
@@ -5392,16 +6428,22 @@
 
 (cffi:defctype %sdl::sensor (:struct %sdl::%sdl-sensor))
 
+(declaim (inline %sdl::sensor-close))
+
 (cffi:defcfun ("SDL_SensorClose" %sdl::sensor-close)
               :void
               (%sdl::sensor (:pointer %sdl::sensor)))
 
 (cffi:defctype %sdl::sensor-id :int)
 
+(declaim (inline %sdl::sensor-from-instance-id))
+
 (cffi:defcfun ("SDL_SensorFromInstanceID"
                %sdl::sensor-from-instance-id)
               (:pointer %sdl::sensor)
               (%sdl::instance-id %sdl::sensor-id))
+
+(declaim (inline %sdl::sensor-get-data))
 
 (cffi:defcfun ("SDL_SensorGetData" %sdl::sensor-get-data)
               :int
@@ -5409,63 +6451,91 @@
               (%sdl::data (:pointer :float))
               (%sdl::num-values :int))
 
+(declaim (inline %sdl::sensor-get-device-instance-id))
+
 (cffi:defcfun ("SDL_SensorGetDeviceInstanceID"
                %sdl::sensor-get-device-instance-id)
               %sdl::sensor-id
               (%sdl::device-index :int))
+
+(declaim (inline %sdl::sensor-get-device-name))
 
 (cffi:defcfun ("SDL_SensorGetDeviceName"
                %sdl::sensor-get-device-name)
               claw-utils:claw-string
               (%sdl::device-index :int))
 
+(declaim (inline %sdl::sensor-get-device-non-portable-type))
+
 (cffi:defcfun ("SDL_SensorGetDeviceNonPortableType"
                %sdl::sensor-get-device-non-portable-type)
               :int
               (%sdl::device-index :int))
+
+(declaim (inline %sdl::sensor-get-device-type))
 
 (cffi:defcfun ("SDL_SensorGetDeviceType"
                %sdl::sensor-get-device-type)
               %sdl::sensor-type
               (%sdl::device-index :int))
 
+(declaim (inline %sdl::sensor-get-instance-id))
+
 (cffi:defcfun ("SDL_SensorGetInstanceID"
                %sdl::sensor-get-instance-id)
               %sdl::sensor-id
               (%sdl::sensor (:pointer %sdl::sensor)))
 
+(declaim (inline %sdl::sensor-get-name))
+
 (cffi:defcfun ("SDL_SensorGetName" %sdl::sensor-get-name)
               claw-utils:claw-string
               (%sdl::sensor (:pointer %sdl::sensor)))
+
+(declaim (inline %sdl::sensor-get-non-portable-type))
 
 (cffi:defcfun ("SDL_SensorGetNonPortableType"
                %sdl::sensor-get-non-portable-type)
               :int
               (%sdl::sensor (:pointer %sdl::sensor)))
 
+(declaim (inline %sdl::sensor-get-type))
+
 (cffi:defcfun ("SDL_SensorGetType" %sdl::sensor-get-type)
               %sdl::sensor-type
               (%sdl::sensor (:pointer %sdl::sensor)))
+
+(declaim (inline %sdl::sensor-open))
 
 (cffi:defcfun ("SDL_SensorOpen" %sdl::sensor-open)
               (:pointer %sdl::sensor)
               (%sdl::device-index :int))
 
+(declaim (inline %sdl::sensor-update))
+
 (cffi:defcfun ("SDL_SensorUpdate" %sdl::sensor-update) :void)
+
+(declaim (inline %sdl::set-assertion-handler))
 
 (cffi:defcfun ("SDL_SetAssertionHandler" %sdl::set-assertion-handler)
               :void
               (%sdl::handler %sdl::assertion-handler)
               (%sdl::userdata (:pointer :void)))
 
+(declaim (inline %sdl::set-clip-rect))
+
 (cffi:defcfun ("SDL_SetClipRect" %sdl::set-clip-rect)
               %sdl::bool
               (%sdl::surface (:pointer %sdl::surface))
               (%sdl::rect (:pointer %sdl::rect)))
 
+(declaim (inline %sdl::set-clipboard-text))
+
 (cffi:defcfun ("SDL_SetClipboardText" %sdl::set-clipboard-text)
               :int
               (%sdl::text claw-utils:claw-string))
+
+(declaim (inline %sdl::set-color-key))
 
 (cffi:defcfun ("SDL_SetColorKey" %sdl::set-color-key)
               :int
@@ -5473,19 +6543,27 @@
               (%sdl::flag :int)
               (%sdl::key %sdl::uint32))
 
+(declaim (inline %sdl::set-cursor))
+
 (cffi:defcfun ("SDL_SetCursor" %sdl::set-cursor)
               :void
               (%sdl::cursor (:pointer %sdl::cursor)))
+
+(declaim (inline %sdl::set-error))
 
 (cffi:defcfun ("SDL_SetError" %sdl::set-error)
               :int
               (%sdl::fmt claw-utils:claw-string)
               &rest)
 
+(declaim (inline %sdl::set-event-filter))
+
 (cffi:defcfun ("SDL_SetEventFilter" %sdl::set-event-filter)
               :void
               (%sdl::filter %sdl::event-filter)
               (%sdl::userdata (:pointer :void)))
+
+(declaim (inline %sdl::set-hint))
 
 (cffi:defcfun ("SDL_SetHint" %sdl::set-hint)
               %sdl::bool
@@ -5500,6 +6578,8 @@
 
 (cffi:defctype %sdl::hint-priority %sdl::|C:@EA@SDL-HINT-PRIORITY|)
 
+(declaim (inline %sdl::set-hint-with-priority))
+
 (cffi:defcfun ("SDL_SetHintWithPriority"
                %sdl::set-hint-with-priority)
               %sdl::bool
@@ -5507,7 +6587,11 @@
               (%sdl::value claw-utils:claw-string)
               (%sdl::priority %sdl::hint-priority))
 
+(declaim (inline %sdl::set-main-ready))
+
 (cffi:defcfun ("SDL_SetMainReady" %sdl::set-main-ready) :void)
+
+(declaim (inline %sdl::set-memory-functions))
 
 (cffi:defcfun ("SDL_SetMemoryFunctions" %sdl::set-memory-functions)
               :int
@@ -5516,9 +6600,13 @@
               (%sdl::realloc-func %sdl::realloc-func)
               (%sdl::free-func %sdl::free-func))
 
+(declaim (inline %sdl::set-mod-state))
+
 (cffi:defcfun ("SDL_SetModState" %sdl::set-mod-state)
               :void
               (%sdl::modstate %sdl::keymod))
+
+(declaim (inline %sdl::set-palette-colors))
 
 (cffi:defcfun ("SDL_SetPaletteColors" %sdl::set-palette-colors)
               :int
@@ -5527,22 +6615,30 @@
               (%sdl::firstcolor :int)
               (%sdl::ncolors :int))
 
+(declaim (inline %sdl::set-pixel-format-palette))
+
 (cffi:defcfun ("SDL_SetPixelFormatPalette"
                %sdl::set-pixel-format-palette)
               :int
               (%sdl::format (:pointer %sdl::pixel-format))
               (%sdl::palette (:pointer %sdl::palette)))
 
+(declaim (inline %sdl::set-relative-mouse-mode))
+
 (cffi:defcfun ("SDL_SetRelativeMouseMode"
                %sdl::set-relative-mouse-mode)
               :int
               (%sdl::enabled %sdl::bool))
+
+(declaim (inline %sdl::set-render-draw-blend-mode))
 
 (cffi:defcfun ("SDL_SetRenderDrawBlendMode"
                %sdl::set-render-draw-blend-mode)
               :int
               (%sdl::renderer (:pointer %sdl::renderer))
               (%sdl::blend-mode %sdl::blend-mode))
+
+(declaim (inline %sdl::set-render-draw-color))
 
 (cffi:defcfun ("SDL_SetRenderDrawColor" %sdl::set-render-draw-color)
               :int
@@ -5552,21 +6648,29 @@
               (%sdl::b %sdl::uint8)
               (%sdl::a %sdl::uint8))
 
+(declaim (inline %sdl::set-render-target))
+
 (cffi:defcfun ("SDL_SetRenderTarget" %sdl::set-render-target)
               :int
               (%sdl::renderer (:pointer %sdl::renderer))
               (%sdl::texture (:pointer %sdl::texture)))
+
+(declaim (inline %sdl::set-surface-alpha-mod))
 
 (cffi:defcfun ("SDL_SetSurfaceAlphaMod" %sdl::set-surface-alpha-mod)
               :int
               (%sdl::surface (:pointer %sdl::surface))
               (%sdl::alpha %sdl::uint8))
 
+(declaim (inline %sdl::set-surface-blend-mode))
+
 (cffi:defcfun ("SDL_SetSurfaceBlendMode"
                %sdl::set-surface-blend-mode)
               :int
               (%sdl::surface (:pointer %sdl::surface))
               (%sdl::blend-mode %sdl::blend-mode))
+
+(declaim (inline %sdl::set-surface-color-mod))
 
 (cffi:defcfun ("SDL_SetSurfaceColorMod" %sdl::set-surface-color-mod)
               :int
@@ -5575,24 +6679,34 @@
               (%sdl::g %sdl::uint8)
               (%sdl::b %sdl::uint8))
 
+(declaim (inline %sdl::set-surface-palette))
+
 (cffi:defcfun ("SDL_SetSurfacePalette" %sdl::set-surface-palette)
               :int
               (%sdl::surface (:pointer %sdl::surface))
               (%sdl::palette (:pointer %sdl::palette)))
+
+(declaim (inline %sdl::set-surface-rle))
 
 (cffi:defcfun ("SDL_SetSurfaceRLE" %sdl::set-surface-rle)
               :int
               (%sdl::surface (:pointer %sdl::surface))
               (%sdl::flag :int))
 
+(declaim (inline %sdl::set-text-input-rect))
+
 (cffi:defcfun ("SDL_SetTextInputRect" %sdl::set-text-input-rect)
               :void
               (%sdl::rect (:pointer %sdl::rect)))
+
+(declaim (inline %sdl::set-texture-alpha-mod))
 
 (cffi:defcfun ("SDL_SetTextureAlphaMod" %sdl::set-texture-alpha-mod)
               :int
               (%sdl::texture (:pointer %sdl::texture))
               (%sdl::alpha %sdl::uint8))
+
+(declaim (inline %sdl::set-texture-blend-mode))
 
 (cffi:defcfun ("SDL_SetTextureBlendMode"
                %sdl::set-texture-blend-mode)
@@ -5600,12 +6714,16 @@
               (%sdl::texture (:pointer %sdl::texture))
               (%sdl::blend-mode %sdl::blend-mode))
 
+(declaim (inline %sdl::set-texture-color-mod))
+
 (cffi:defcfun ("SDL_SetTextureColorMod" %sdl::set-texture-color-mod)
               :int
               (%sdl::texture (:pointer %sdl::texture))
               (%sdl::r %sdl::uint8)
               (%sdl::g %sdl::uint8)
               (%sdl::b %sdl::uint8))
+
+(declaim (inline %sdl::set-texture-scale-mode))
 
 (cffi:defcfun ("SDL_SetTextureScaleMode"
                %sdl::set-texture-scale-mode)
@@ -5623,19 +6741,27 @@
 (cffi:defctype %sdl::thread-priority
                %sdl::|C:@EA@SDL-THREAD-PRIORITY|)
 
+(declaim (inline %sdl::set-thread-priority))
+
 (cffi:defcfun ("SDL_SetThreadPriority" %sdl::set-thread-priority)
               :int
               (%sdl::priority %sdl::thread-priority))
+
+(declaim (inline %sdl::set-window-bordered))
 
 (cffi:defcfun ("SDL_SetWindowBordered" %sdl::set-window-bordered)
               :void
               (%sdl::window (:pointer %sdl::window))
               (%sdl::bordered %sdl::bool))
 
+(declaim (inline %sdl::set-window-brightness))
+
 (cffi:defcfun ("SDL_SetWindowBrightness" %sdl::set-window-brightness)
               :int
               (%sdl::window (:pointer %sdl::window))
               (%sdl::brightness :float))
+
+(declaim (inline %sdl::set-window-data))
 
 (cffi:defcfun ("SDL_SetWindowData" %sdl::set-window-data)
               (:pointer :void)
@@ -5643,16 +6769,22 @@
               (%sdl::name claw-utils:claw-string)
               (%sdl::userdata (:pointer :void)))
 
+(declaim (inline %sdl::set-window-display-mode))
+
 (cffi:defcfun ("SDL_SetWindowDisplayMode"
                %sdl::set-window-display-mode)
               :int
               (%sdl::window (:pointer %sdl::window))
               (%sdl::mode (:pointer %sdl::display-mode)))
 
+(declaim (inline %sdl::set-window-fullscreen))
+
 (cffi:defcfun ("SDL_SetWindowFullscreen" %sdl::set-window-fullscreen)
               :int
               (%sdl::window (:pointer %sdl::window))
               (%sdl::flags %sdl::uint32))
+
+(declaim (inline %sdl::set-window-gamma-ramp))
 
 (cffi:defcfun ("SDL_SetWindowGammaRamp" %sdl::set-window-gamma-ramp)
               :int
@@ -5661,6 +6793,8 @@
               (%sdl::green (:pointer %sdl::uint16))
               (%sdl::blue (:pointer %sdl::uint16)))
 
+(declaim (inline %sdl::set-window-grab))
+
 (cffi:defcfun ("SDL_SetWindowGrab" %sdl::set-window-grab)
               :void
               (%sdl::window (:pointer %sdl::window))
@@ -5668,21 +6802,29 @@
 
 (cffi:defctype %sdl::hit-test (:pointer :pointer))
 
+(declaim (inline %sdl::set-window-hit-test))
+
 (cffi:defcfun ("SDL_SetWindowHitTest" %sdl::set-window-hit-test)
               :int
               (%sdl::window (:pointer %sdl::window))
               (%sdl::callback %sdl::hit-test)
               (%sdl::callback-data (:pointer :void)))
 
+(declaim (inline %sdl::set-window-icon))
+
 (cffi:defcfun ("SDL_SetWindowIcon" %sdl::set-window-icon)
               :void
               (%sdl::window (:pointer %sdl::window))
               (%sdl::icon (:pointer %sdl::surface)))
 
+(declaim (inline %sdl::set-window-input-focus))
+
 (cffi:defcfun ("SDL_SetWindowInputFocus"
                %sdl::set-window-input-focus)
               :int
               (%sdl::window (:pointer %sdl::window)))
+
+(declaim (inline %sdl::set-window-maximum-size))
 
 (cffi:defcfun ("SDL_SetWindowMaximumSize"
                %sdl::set-window-maximum-size)
@@ -5691,6 +6833,8 @@
               (%sdl::max-w :int)
               (%sdl::max-h :int))
 
+(declaim (inline %sdl::set-window-minimum-size))
+
 (cffi:defcfun ("SDL_SetWindowMinimumSize"
                %sdl::set-window-minimum-size)
               :void
@@ -5698,15 +6842,21 @@
               (%sdl::min-w :int)
               (%sdl::min-h :int))
 
+(declaim (inline %sdl::set-window-modal-for))
+
 (cffi:defcfun ("SDL_SetWindowModalFor" %sdl::set-window-modal-for)
               :int
               (%sdl::modal-window (:pointer %sdl::window))
               (%sdl::parent-window (:pointer %sdl::window)))
 
+(declaim (inline %sdl::set-window-opacity))
+
 (cffi:defcfun ("SDL_SetWindowOpacity" %sdl::set-window-opacity)
               :int
               (%sdl::window (:pointer %sdl::window))
               (%sdl::opacity :float))
+
+(declaim (inline %sdl::set-window-position))
 
 (cffi:defcfun ("SDL_SetWindowPosition" %sdl::set-window-position)
               :void
@@ -5714,10 +6864,14 @@
               (%sdl::x :int)
               (%sdl::y :int))
 
+(declaim (inline %sdl::set-window-resizable))
+
 (cffi:defcfun ("SDL_SetWindowResizable" %sdl::set-window-resizable)
               :void
               (%sdl::window (:pointer %sdl::window))
               (%sdl::resizable %sdl::bool))
+
+(declaim (inline %sdl::set-window-shape))
 
 (cffi:defcfun ("SDL_SetWindowShape" %sdl::set-window-shape)
               :int
@@ -5725,21 +6879,29 @@
               (%sdl::shape (:pointer %sdl::surface))
               (%sdl::shape-mode (:pointer %sdl::window-shape-mode)))
 
+(declaim (inline %sdl::set-window-size))
+
 (cffi:defcfun ("SDL_SetWindowSize" %sdl::set-window-size)
               :void
               (%sdl::window (:pointer %sdl::window))
               (%sdl::w :int)
               (%sdl::h :int))
 
+(declaim (inline %sdl::set-window-title))
+
 (cffi:defcfun ("SDL_SetWindowTitle" %sdl::set-window-title)
               :void
               (%sdl::window (:pointer %sdl::window))
               (%sdl::title claw-utils:claw-string))
 
+(declaim (inline %sdl::set-yuv-conversion-mode))
+
 (cffi:defcfun ("SDL_SetYUVConversionMode"
                %sdl::set-yuv-conversion-mode)
               :void
               (%sdl::mode %sdl::yuv-conversion-mode))
+
+(declaim (inline %sdl::show-cursor))
 
 (cffi:defcfun ("SDL_ShowCursor" %sdl::show-cursor)
               :int
@@ -5785,11 +6947,15 @@
 (cffi:defctype %sdl::message-box-data
                (:struct %sdl::|C:@SA@SDL-MESSAGE-BOX-DATA|))
 
+(declaim (inline %sdl::show-message-box))
+
 (cffi:defcfun ("SDL_ShowMessageBox" %sdl::show-message-box)
               :int
               (%sdl::messageboxdata
                (:pointer %sdl::message-box-data))
               (%sdl::buttonid (:pointer :int)))
+
+(declaim (inline %sdl::show-simple-message-box))
 
 (cffi:defcfun ("SDL_ShowSimpleMessageBox"
                %sdl::show-simple-message-box)
@@ -5799,9 +6965,13 @@
               (%sdl::message claw-utils:claw-string)
               (%sdl::window (:pointer %sdl::window)))
 
+(declaim (inline %sdl::show-window))
+
 (cffi:defcfun ("SDL_ShowWindow" %sdl::show-window)
               :void
               (%sdl::window (:pointer %sdl::window)))
+
+(declaim (inline %sdl::soft-stretch))
 
 (cffi:defcfun ("SDL_SoftStretch" %sdl::soft-stretch)
               :int
@@ -5810,17 +6980,27 @@
               (%sdl::dst (:pointer %sdl::surface))
               (%sdl::dstrect (:pointer %sdl::rect)))
 
+(declaim (inline %sdl::start-text-input))
+
 (cffi:defcfun ("SDL_StartTextInput" %sdl::start-text-input) :void)
+
+(declaim (inline %sdl::stop-text-input))
 
 (cffi:defcfun ("SDL_StopTextInput" %sdl::stop-text-input) :void)
 
 (cffi:defctype %sdl::tlsid :unsigned-int)
 
+(declaim (inline %sdl::tls-create))
+
 (cffi:defcfun ("SDL_TLSCreate" %sdl::tls-create) %sdl::tlsid)
+
+(declaim (inline %sdl::tls-get))
 
 (cffi:defcfun ("SDL_TLSGet" %sdl::tls-get)
               (:pointer :void)
               (%sdl::id %sdl::tlsid))
+
+(declaim (inline %sdl::tls-set))
 
 (cffi:defcfun ("SDL_TLSSet" %sdl::tls-set)
               :int
@@ -5828,11 +7008,17 @@
               (%sdl::value (:pointer :void))
               (%sdl::destructor (:pointer :pointer)))
 
+(declaim (inline %sdl::thread-id))
+
 (cffi:defcfun ("SDL_ThreadID" %sdl::thread-id) %sdl::thread-id)
+
+(declaim (inline %sdl::try-lock-mutex))
 
 (cffi:defcfun ("SDL_TryLockMutex" %sdl::try-lock-mutex)
               :int
               (%sdl::mutex (:pointer %sdl::mutex)))
+
+(declaim (inline %sdl::union-rect))
 
 (cffi:defcfun ("SDL_UnionRect" %sdl::union-rect)
               :void
@@ -5840,31 +7026,49 @@
               (%sdl::b (:pointer %sdl::rect))
               (%sdl::result (:pointer %sdl::rect)))
 
+(declaim (inline %sdl::unload-object))
+
 (cffi:defcfun ("SDL_UnloadObject" %sdl::unload-object)
               :void
               (%sdl::handle (:pointer :void)))
 
+(declaim (inline %sdl::unlock-audio))
+
 (cffi:defcfun ("SDL_UnlockAudio" %sdl::unlock-audio) :void)
+
+(declaim (inline %sdl::unlock-audio-device))
 
 (cffi:defcfun ("SDL_UnlockAudioDevice" %sdl::unlock-audio-device)
               :void
               (%sdl::dev %sdl::audio-device-id))
 
+(declaim (inline %sdl::unlock-joysticks))
+
 (cffi:defcfun ("SDL_UnlockJoysticks" %sdl::unlock-joysticks) :void)
+
+(declaim (inline %sdl::unlock-mutex))
 
 (cffi:defcfun ("SDL_UnlockMutex" %sdl::unlock-mutex)
               :int
               (%sdl::mutex (:pointer %sdl::mutex)))
 
+(declaim (inline %sdl::unlock-sensors))
+
 (cffi:defcfun ("SDL_UnlockSensors" %sdl::unlock-sensors) :void)
+
+(declaim (inline %sdl::unlock-surface))
 
 (cffi:defcfun ("SDL_UnlockSurface" %sdl::unlock-surface)
               :void
               (%sdl::surface (:pointer %sdl::surface)))
 
+(declaim (inline %sdl::unlock-texture))
+
 (cffi:defcfun ("SDL_UnlockTexture" %sdl::unlock-texture)
               :void
               (%sdl::texture (:pointer %sdl::texture)))
+
+(declaim (inline %sdl::update-texture))
 
 (cffi:defcfun ("SDL_UpdateTexture" %sdl::update-texture)
               :int
@@ -5873,9 +7077,13 @@
               (%sdl::pixels (:pointer :void))
               (%sdl::pitch :int))
 
+(declaim (inline %sdl::update-window-surface))
+
 (cffi:defcfun ("SDL_UpdateWindowSurface" %sdl::update-window-surface)
               :int
               (%sdl::window (:pointer %sdl::window)))
+
+(declaim (inline %sdl::update-window-surface-rects))
 
 (cffi:defcfun ("SDL_UpdateWindowSurfaceRects"
                %sdl::update-window-surface-rects)
@@ -5883,6 +7091,8 @@
               (%sdl::window (:pointer %sdl::window))
               (%sdl::rects (:pointer %sdl::rect))
               (%sdl::numrects :int))
+
+(declaim (inline %sdl::update-yuv-texture))
 
 (cffi:defcfun ("SDL_UpdateYUVTexture" %sdl::update-yuv-texture)
               :int
@@ -5895,12 +7105,16 @@
               (%sdl::vplane (:pointer %sdl::uint8))
               (%sdl::vpitch :int))
 
+(declaim (inline %sdl::upper-blit))
+
 (cffi:defcfun ("SDL_UpperBlit" %sdl::upper-blit)
               :int
               (%sdl::src (:pointer %sdl::surface))
               (%sdl::srcrect (:pointer %sdl::rect))
               (%sdl::dst (:pointer %sdl::surface))
               (%sdl::dstrect (:pointer %sdl::rect)))
+
+(declaim (inline %sdl::upper-blit-scaled))
 
 (cffi:defcfun ("SDL_UpperBlitScaled" %sdl::upper-blit-scaled)
               :int
@@ -5909,30 +7123,44 @@
               (%sdl::dst (:pointer %sdl::surface))
               (%sdl::dstrect (:pointer %sdl::rect)))
 
+(declaim (inline %sdl::video-init))
+
 (cffi:defcfun ("SDL_VideoInit" %sdl::video-init)
               :int
               (%sdl::driver-name claw-utils:claw-string))
 
+(declaim (inline %sdl::video-quit))
+
 (cffi:defcfun ("SDL_VideoQuit" %sdl::video-quit) :void)
+
+(declaim (inline %sdl::wait-event))
 
 (cffi:defcfun ("SDL_WaitEvent" %sdl::wait-event)
               :int
               (%sdl::event (:pointer %sdl::event)))
+
+(declaim (inline %sdl::wait-event-timeout))
 
 (cffi:defcfun ("SDL_WaitEventTimeout" %sdl::wait-event-timeout)
               :int
               (%sdl::event (:pointer %sdl::event))
               (%sdl::timeout :int))
 
+(declaim (inline %sdl::wait-thread))
+
 (cffi:defcfun ("SDL_WaitThread" %sdl::wait-thread)
               :void
               (%sdl::thread (:pointer %sdl::thread))
               (%sdl::status (:pointer :int)))
 
+(declaim (inline %sdl::warp-mouse-global))
+
 (cffi:defcfun ("SDL_WarpMouseGlobal" %sdl::warp-mouse-global)
               :int
               (%sdl::x :int)
               (%sdl::y :int))
+
+(declaim (inline %sdl::warp-mouse-in-window))
 
 (cffi:defcfun ("SDL_WarpMouseInWindow" %sdl::warp-mouse-in-window)
               :void
@@ -5940,99 +7168,153 @@
               (%sdl::x :int)
               (%sdl::y :int))
 
+(declaim (inline %sdl::was-init))
+
 (cffi:defcfun ("SDL_WasInit" %sdl::was-init)
               %sdl::uint32
               (%sdl::flags %sdl::uint32))
+
+(declaim (inline %sdl::write-be16))
 
 (cffi:defcfun ("SDL_WriteBE16" %sdl::write-be16)
               %sdl::size-t
               (%sdl::dst (:pointer %sdl::r-wops))
               (%sdl::value %sdl::uint16))
 
+(declaim (inline %sdl::write-be32))
+
 (cffi:defcfun ("SDL_WriteBE32" %sdl::write-be32)
               %sdl::size-t
               (%sdl::dst (:pointer %sdl::r-wops))
               (%sdl::value %sdl::uint32))
+
+(declaim (inline %sdl::write-be64))
 
 (cffi:defcfun ("SDL_WriteBE64" %sdl::write-be64)
               %sdl::size-t
               (%sdl::dst (:pointer %sdl::r-wops))
               (%sdl::value %sdl::uint64))
 
+(declaim (inline %sdl::write-le16))
+
 (cffi:defcfun ("SDL_WriteLE16" %sdl::write-le16)
               %sdl::size-t
               (%sdl::dst (:pointer %sdl::r-wops))
               (%sdl::value %sdl::uint16))
+
+(declaim (inline %sdl::write-le32))
 
 (cffi:defcfun ("SDL_WriteLE32" %sdl::write-le32)
               %sdl::size-t
               (%sdl::dst (:pointer %sdl::r-wops))
               (%sdl::value %sdl::uint32))
 
+(declaim (inline %sdl::write-le64))
+
 (cffi:defcfun ("SDL_WriteLE64" %sdl::write-le64)
               %sdl::size-t
               (%sdl::dst (:pointer %sdl::r-wops))
               (%sdl::value %sdl::uint64))
+
+(declaim (inline %sdl::write-u8))
 
 (cffi:defcfun ("SDL_WriteU8" %sdl::write-u8)
               %sdl::size-t
               (%sdl::dst (:pointer %sdl::r-wops))
               (%sdl::value %sdl::uint8))
 
+(declaim (inline %sdl::abs))
+
 (cffi:defcfun ("SDL_abs" %sdl::abs) :int (%sdl::x :int))
+
+(declaim (inline %sdl::acos))
 
 (cffi:defcfun ("SDL_acos" %sdl::acos) :double (%sdl::x :double))
 
+(declaim (inline %sdl::acosf))
+
 (cffi:defcfun ("SDL_acosf" %sdl::acosf) :float (%sdl::x :float))
+
+(declaim (inline %sdl::asin))
 
 (cffi:defcfun ("SDL_asin" %sdl::asin) :double (%sdl::x :double))
 
+(declaim (inline %sdl::asinf))
+
 (cffi:defcfun ("SDL_asinf" %sdl::asinf) :float (%sdl::x :float))
 
+(declaim (inline %sdl::atan))
+
 (cffi:defcfun ("SDL_atan" %sdl::atan) :double (%sdl::x :double))
+
+(declaim (inline %sdl::atan2))
 
 (cffi:defcfun ("SDL_atan2" %sdl::atan2)
               :double
               (%sdl::x :double)
               (%sdl::y :double))
 
+(declaim (inline %sdl::atan2f))
+
 (cffi:defcfun ("SDL_atan2f" %sdl::atan2f)
               :float
               (%sdl::x :float)
               (%sdl::y :float))
 
+(declaim (inline %sdl::atanf))
+
 (cffi:defcfun ("SDL_atanf" %sdl::atanf) :float (%sdl::x :float))
+
+(declaim (inline %sdl::atof))
 
 (cffi:defcfun ("SDL_atof" %sdl::atof)
               :double
               (%sdl::str claw-utils:claw-string))
 
+(declaim (inline %sdl::atoi))
+
 (cffi:defcfun ("SDL_atoi" %sdl::atoi)
               :int
               (%sdl::str claw-utils:claw-string))
+
+(declaim (inline %sdl::calloc))
 
 (cffi:defcfun ("SDL_calloc" %sdl::calloc)
               (:pointer :void)
               (%sdl::nmemb %sdl::size-t)
               (%sdl::size %sdl::size-t))
 
+(declaim (inline %sdl::ceil))
+
 (cffi:defcfun ("SDL_ceil" %sdl::ceil) :double (%sdl::x :double))
 
+(declaim (inline %sdl::ceilf))
+
 (cffi:defcfun ("SDL_ceilf" %sdl::ceilf) :float (%sdl::x :float))
+
+(declaim (inline %sdl::copysign))
 
 (cffi:defcfun ("SDL_copysign" %sdl::copysign)
               :double
               (%sdl::x :double)
               (%sdl::y :double))
 
+(declaim (inline %sdl::copysignf))
+
 (cffi:defcfun ("SDL_copysignf" %sdl::copysignf)
               :float
               (%sdl::x :float)
               (%sdl::y :float))
 
+(declaim (inline %sdl::cos))
+
 (cffi:defcfun ("SDL_cos" %sdl::cos) :double (%sdl::x :double))
 
+(declaim (inline %sdl::cosf))
+
 (cffi:defcfun ("SDL_cosf" %sdl::cosf) :float (%sdl::x :float))
+
+(declaim (inline %sdl::crc32))
 
 (cffi:defcfun ("SDL_crc32" %sdl::crc32)
               %sdl::uint32
@@ -6040,31 +7322,51 @@
               (%sdl::data (:pointer :void))
               (%sdl::len %sdl::size-t))
 
+(declaim (inline %sdl::exp))
+
 (cffi:defcfun ("SDL_exp" %sdl::exp) :double (%sdl::x :double))
+
+(declaim (inline %sdl::expf))
 
 (cffi:defcfun ("SDL_expf" %sdl::expf) :float (%sdl::x :float))
 
+(declaim (inline %sdl::fabs))
+
 (cffi:defcfun ("SDL_fabs" %sdl::fabs) :double (%sdl::x :double))
+
+(declaim (inline %sdl::fabsf))
 
 (cffi:defcfun ("SDL_fabsf" %sdl::fabsf) :float (%sdl::x :float))
 
+(declaim (inline %sdl::floor))
+
 (cffi:defcfun ("SDL_floor" %sdl::floor) :double (%sdl::x :double))
 
+(declaim (inline %sdl::floorf))
+
 (cffi:defcfun ("SDL_floorf" %sdl::floorf) :float (%sdl::x :float))
+
+(declaim (inline %sdl::fmod))
 
 (cffi:defcfun ("SDL_fmod" %sdl::fmod)
               :double
               (%sdl::x :double)
               (%sdl::y :double))
 
+(declaim (inline %sdl::fmodf))
+
 (cffi:defcfun ("SDL_fmodf" %sdl::fmodf)
               :float
               (%sdl::x :float)
               (%sdl::y :float))
 
+(declaim (inline %sdl::free))
+
 (cffi:defcfun ("SDL_free" %sdl::free)
               :void
               (%sdl::mem (:pointer :void)))
+
+(declaim (inline %sdl::getenv))
 
 (cffi:defcfun ("SDL_getenv" %sdl::getenv)
               claw-utils:claw-string
@@ -6074,6 +7376,8 @@
 
 (cffi:defctype %sdl::iconv-t (:pointer (:struct %sdl::%sdl-iconv-t)))
 
+(declaim (inline %sdl::iconv))
+
 (cffi:defcfun ("SDL_iconv" %sdl::iconv)
               %sdl::size-t
               (%sdl::cd %sdl::iconv-t)
@@ -6082,14 +7386,20 @@
               (%sdl::outbuf (:pointer claw-utils:claw-string))
               (%sdl::outbytesleft (:pointer %sdl::size-t)))
 
+(declaim (inline %sdl::iconv-close))
+
 (cffi:defcfun ("SDL_iconv_close" %sdl::iconv-close)
               :int
               (%sdl::cd %sdl::iconv-t))
+
+(declaim (inline %sdl::iconv-open))
 
 (cffi:defcfun ("SDL_iconv_open" %sdl::iconv-open)
               %sdl::iconv-t
               (%sdl::tocode claw-utils:claw-string)
               (%sdl::fromcode claw-utils:claw-string))
+
+(declaim (inline %sdl::iconv-string))
 
 (cffi:defcfun ("SDL_iconv_string" %sdl::iconv-string)
               claw-utils:claw-string
@@ -6098,13 +7408,23 @@
               (%sdl::inbuf claw-utils:claw-string)
               (%sdl::inbytesleft %sdl::size-t))
 
+(declaim (inline %sdl::isdigit))
+
 (cffi:defcfun ("SDL_isdigit" %sdl::isdigit) :int (%sdl::x :int))
+
+(declaim (inline %sdl::islower))
 
 (cffi:defcfun ("SDL_islower" %sdl::islower) :int (%sdl::x :int))
 
+(declaim (inline %sdl::isspace))
+
 (cffi:defcfun ("SDL_isspace" %sdl::isspace) :int (%sdl::x :int))
 
+(declaim (inline %sdl::isupper))
+
 (cffi:defcfun ("SDL_isupper" %sdl::isupper) :int (%sdl::x :int))
+
+(declaim (inline %sdl::itoa))
 
 (cffi:defcfun ("SDL_itoa" %sdl::itoa)
               claw-utils:claw-string
@@ -6112,19 +7432,31 @@
               (%sdl::str claw-utils:claw-string)
               (%sdl::radix :int))
 
+(declaim (inline %sdl::lltoa))
+
 (cffi:defcfun ("SDL_lltoa" %sdl::lltoa)
               claw-utils:claw-string
               (%sdl::value %sdl::sint64)
               (%sdl::str claw-utils:claw-string)
               (%sdl::radix :int))
 
+(declaim (inline %sdl::log))
+
 (cffi:defcfun ("SDL_log" %sdl::log) :double (%sdl::x :double))
+
+(declaim (inline %sdl::log10))
 
 (cffi:defcfun ("SDL_log10" %sdl::log10) :double (%sdl::x :double))
 
+(declaim (inline %sdl::log10f))
+
 (cffi:defcfun ("SDL_log10f" %sdl::log10f) :float (%sdl::x :float))
 
+(declaim (inline %sdl::logf))
+
 (cffi:defcfun ("SDL_logf" %sdl::logf) :float (%sdl::x :float))
+
+(declaim (inline %sdl::ltoa))
 
 (cffi:defcfun ("SDL_ltoa" %sdl::ltoa)
               claw-utils:claw-string
@@ -6132,14 +7464,20 @@
               (%sdl::str claw-utils:claw-string)
               (%sdl::radix :int))
 
+(declaim (inline %sdl::main))
+
 (cffi:defcfun ("SDL_main" %sdl::main)
               :int
               (%sdl::argc :int)
               (%sdl::argv (:pointer claw-utils:claw-string)))
 
+(declaim (inline %sdl::malloc))
+
 (cffi:defcfun ("SDL_malloc" %sdl::malloc)
               (:pointer :void)
               (%sdl::size %sdl::size-t))
+
+(declaim (inline %sdl::memcmp))
 
 (cffi:defcfun ("SDL_memcmp" %sdl::memcmp)
               :int
@@ -6147,11 +7485,15 @@
               (%sdl::s2 (:pointer :void))
               (%sdl::len %sdl::size-t))
 
+(declaim (inline %sdl::memcpy))
+
 (cffi:defcfun ("SDL_memcpy" %sdl::memcpy)
               (:pointer :void)
               (%sdl::dst (:pointer :void))
               (%sdl::src (:pointer :void))
               (%sdl::len %sdl::size-t))
+
+(declaim (inline %sdl::memmove))
 
 (cffi:defcfun ("SDL_memmove" %sdl::memmove)
               (:pointer :void)
@@ -6159,21 +7501,29 @@
               (%sdl::src (:pointer :void))
               (%sdl::len %sdl::size-t))
 
+(declaim (inline %sdl::memset))
+
 (cffi:defcfun ("SDL_memset" %sdl::memset)
               (:pointer :void)
               (%sdl::dst (:pointer :void))
               (%sdl::c :int)
               (%sdl::len %sdl::size-t))
 
+(declaim (inline %sdl::pow))
+
 (cffi:defcfun ("SDL_pow" %sdl::pow)
               :double
               (%sdl::x :double)
               (%sdl::y :double))
 
+(declaim (inline %sdl::powf))
+
 (cffi:defcfun ("SDL_powf" %sdl::powf)
               :float
               (%sdl::x :float)
               (%sdl::y :float))
+
+(declaim (inline %sdl::qsort))
 
 (cffi:defcfun ("SDL_qsort" %sdl::qsort)
               :void
@@ -6182,20 +7532,28 @@
               (%sdl::size %sdl::size-t)
               (%sdl::compare (:pointer :pointer)))
 
+(declaim (inline %sdl::realloc))
+
 (cffi:defcfun ("SDL_realloc" %sdl::realloc)
               (:pointer :void)
               (%sdl::mem (:pointer :void))
               (%sdl::size %sdl::size-t))
+
+(declaim (inline %sdl::scalbn))
 
 (cffi:defcfun ("SDL_scalbn" %sdl::scalbn)
               :double
               (%sdl::x :double)
               (%sdl::n :int))
 
+(declaim (inline %sdl::scalbnf))
+
 (cffi:defcfun ("SDL_scalbnf" %sdl::scalbnf)
               :float
               (%sdl::x :float)
               (%sdl::n :int))
+
+(declaim (inline %sdl::setenv))
 
 (cffi:defcfun ("SDL_setenv" %sdl::setenv)
               :int
@@ -6203,9 +7561,15 @@
               (%sdl::value claw-utils:claw-string)
               (%sdl::overwrite :int))
 
+(declaim (inline %sdl::sin))
+
 (cffi:defcfun ("SDL_sin" %sdl::sin) :double (%sdl::x :double))
 
+(declaim (inline %sdl::sinf))
+
 (cffi:defcfun ("SDL_sinf" %sdl::sinf) :float (%sdl::x :float))
+
+(declaim (inline %sdl::snprintf))
 
 (cffi:defcfun ("SDL_snprintf" %sdl::snprintf)
               :int
@@ -6214,9 +7578,15 @@
               (%sdl::fmt claw-utils:claw-string)
               &rest)
 
+(declaim (inline %sdl::sqrt))
+
 (cffi:defcfun ("SDL_sqrt" %sdl::sqrt) :double (%sdl::x :double))
 
+(declaim (inline %sdl::sqrtf))
+
 (cffi:defcfun ("SDL_sqrtf" %sdl::sqrtf) :float (%sdl::x :float))
+
+(declaim (inline %sdl::sscanf))
 
 (cffi:defcfun ("SDL_sscanf" %sdl::sscanf)
               :int
@@ -6224,24 +7594,34 @@
               (%sdl::fmt claw-utils:claw-string)
               &rest)
 
+(declaim (inline %sdl::strcasecmp))
+
 (cffi:defcfun ("SDL_strcasecmp" %sdl::strcasecmp)
               :int
               (%sdl::str1 claw-utils:claw-string)
               (%sdl::str2 claw-utils:claw-string))
+
+(declaim (inline %sdl::strchr))
 
 (cffi:defcfun ("SDL_strchr" %sdl::strchr)
               claw-utils:claw-string
               (%sdl::str claw-utils:claw-string)
               (%sdl::c :int))
 
+(declaim (inline %sdl::strcmp))
+
 (cffi:defcfun ("SDL_strcmp" %sdl::strcmp)
               :int
               (%sdl::str1 claw-utils:claw-string)
               (%sdl::str2 claw-utils:claw-string))
 
+(declaim (inline %sdl::strdup))
+
 (cffi:defcfun ("SDL_strdup" %sdl::strdup)
               claw-utils:claw-string
               (%sdl::str claw-utils:claw-string))
+
+(declaim (inline %sdl::strlcat))
 
 (cffi:defcfun ("SDL_strlcat" %sdl::strlcat)
               %sdl::size-t
@@ -6249,19 +7629,27 @@
               (%sdl::src claw-utils:claw-string)
               (%sdl::maxlen %sdl::size-t))
 
+(declaim (inline %sdl::strlcpy))
+
 (cffi:defcfun ("SDL_strlcpy" %sdl::strlcpy)
               %sdl::size-t
               (%sdl::dst claw-utils:claw-string)
               (%sdl::src claw-utils:claw-string)
               (%sdl::maxlen %sdl::size-t))
 
+(declaim (inline %sdl::strlen))
+
 (cffi:defcfun ("SDL_strlen" %sdl::strlen)
               %sdl::size-t
               (%sdl::str claw-utils:claw-string))
 
+(declaim (inline %sdl::strlwr))
+
 (cffi:defcfun ("SDL_strlwr" %sdl::strlwr)
               claw-utils:claw-string
               (%sdl::str claw-utils:claw-string))
+
+(declaim (inline %sdl::strncasecmp))
 
 (cffi:defcfun ("SDL_strncasecmp" %sdl::strncasecmp)
               :int
@@ -6269,30 +7657,42 @@
               (%sdl::str2 claw-utils:claw-string)
               (%sdl::len %sdl::size-t))
 
+(declaim (inline %sdl::strncmp))
+
 (cffi:defcfun ("SDL_strncmp" %sdl::strncmp)
               :int
               (%sdl::str1 claw-utils:claw-string)
               (%sdl::str2 claw-utils:claw-string)
               (%sdl::maxlen %sdl::size-t))
 
+(declaim (inline %sdl::strrchr))
+
 (cffi:defcfun ("SDL_strrchr" %sdl::strrchr)
               claw-utils:claw-string
               (%sdl::str claw-utils:claw-string)
               (%sdl::c :int))
 
+(declaim (inline %sdl::strrev))
+
 (cffi:defcfun ("SDL_strrev" %sdl::strrev)
               claw-utils:claw-string
               (%sdl::str claw-utils:claw-string))
+
+(declaim (inline %sdl::strstr))
 
 (cffi:defcfun ("SDL_strstr" %sdl::strstr)
               claw-utils:claw-string
               (%sdl::haystack claw-utils:claw-string)
               (%sdl::needle claw-utils:claw-string))
 
+(declaim (inline %sdl::strtod))
+
 (cffi:defcfun ("SDL_strtod" %sdl::strtod)
               :double
               (%sdl::str claw-utils:claw-string)
               (%sdl::endp (:pointer claw-utils:claw-string)))
+
+(declaim (inline %sdl::strtokr))
 
 (cffi:defcfun ("SDL_strtokr" %sdl::strtokr)
               claw-utils:claw-string
@@ -6300,11 +7700,15 @@
               (%sdl::s2 claw-utils:claw-string)
               (%sdl::saveptr (:pointer claw-utils:claw-string)))
 
+(declaim (inline %sdl::strtol))
+
 (cffi:defcfun ("SDL_strtol" %sdl::strtol)
               :long
               (%sdl::str claw-utils:claw-string)
               (%sdl::endp (:pointer claw-utils:claw-string))
               (%sdl::base :int))
+
+(declaim (inline %sdl::strtoll))
 
 (cffi:defcfun ("SDL_strtoll" %sdl::strtoll)
               %sdl::sint64
@@ -6312,11 +7716,15 @@
               (%sdl::endp (:pointer claw-utils:claw-string))
               (%sdl::base :int))
 
+(declaim (inline %sdl::strtoul))
+
 (cffi:defcfun ("SDL_strtoul" %sdl::strtoul)
               :unsigned-long
               (%sdl::str claw-utils:claw-string)
               (%sdl::endp (:pointer claw-utils:claw-string))
               (%sdl::base :int))
+
+(declaim (inline %sdl::strtoull))
 
 (cffi:defcfun ("SDL_strtoull" %sdl::strtoull)
               %sdl::uint64
@@ -6324,21 +7732,37 @@
               (%sdl::endp (:pointer claw-utils:claw-string))
               (%sdl::base :int))
 
+(declaim (inline %sdl::strupr))
+
 (cffi:defcfun ("SDL_strupr" %sdl::strupr)
               claw-utils:claw-string
               (%sdl::str claw-utils:claw-string))
 
+(declaim (inline %sdl::tan))
+
 (cffi:defcfun ("SDL_tan" %sdl::tan) :double (%sdl::x :double))
+
+(declaim (inline %sdl::tanf))
 
 (cffi:defcfun ("SDL_tanf" %sdl::tanf) :float (%sdl::x :float))
 
+(declaim (inline %sdl::tolower))
+
 (cffi:defcfun ("SDL_tolower" %sdl::tolower) :int (%sdl::x :int))
+
+(declaim (inline %sdl::toupper))
 
 (cffi:defcfun ("SDL_toupper" %sdl::toupper) :int (%sdl::x :int))
 
+(declaim (inline %sdl::trunc))
+
 (cffi:defcfun ("SDL_trunc" %sdl::trunc) :double (%sdl::x :double))
 
+(declaim (inline %sdl::truncf))
+
 (cffi:defcfun ("SDL_truncf" %sdl::truncf) :float (%sdl::x :float))
+
+(declaim (inline %sdl::uitoa))
 
 (cffi:defcfun ("SDL_uitoa" %sdl::uitoa)
               claw-utils:claw-string
@@ -6346,11 +7770,15 @@
               (%sdl::str claw-utils:claw-string)
               (%sdl::radix :int))
 
+(declaim (inline %sdl::ulltoa))
+
 (cffi:defcfun ("SDL_ulltoa" %sdl::ulltoa)
               claw-utils:claw-string
               (%sdl::value %sdl::uint64)
               (%sdl::str claw-utils:claw-string)
               (%sdl::radix :int))
+
+(declaim (inline %sdl::ultoa))
 
 (cffi:defcfun ("SDL_ultoa" %sdl::ultoa)
               claw-utils:claw-string
@@ -6358,15 +7786,21 @@
               (%sdl::str claw-utils:claw-string)
               (%sdl::radix :int))
 
+(declaim (inline %sdl::utf8strlcpy))
+
 (cffi:defcfun ("SDL_utf8strlcpy" %sdl::utf8strlcpy)
               %sdl::size-t
               (%sdl::dst claw-utils:claw-string)
               (%sdl::src claw-utils:claw-string)
               (%sdl::dst-bytes %sdl::size-t))
 
+(declaim (inline %sdl::utf8strlen))
+
 (cffi:defcfun ("SDL_utf8strlen" %sdl::utf8strlen)
               %sdl::size-t
               (%sdl::str claw-utils:claw-string))
+
+(declaim (inline %sdl::vsnprintf))
 
 (cffi:defcfun ("SDL_vsnprintf" %sdl::vsnprintf)
               :int
@@ -6374,6 +7808,8 @@
               (%sdl::maxlen %sdl::size-t)
               (%sdl::fmt claw-utils:claw-string)
               (%sdl::ap %sdl::va-list))
+
+(declaim (inline %sdl::vsscanf))
 
 (cffi:defcfun ("SDL_vsscanf" %sdl::vsscanf)
               :int
@@ -6383,19 +7819,27 @@
 
 (cffi:defctype %sdl::wchar-t :int)
 
+(declaim (inline %sdl::wcscasecmp))
+
 (cffi:defcfun ("SDL_wcscasecmp" %sdl::wcscasecmp)
               :int
               (%sdl::str1 (:pointer %sdl::wchar-t))
               (%sdl::str2 (:pointer %sdl::wchar-t)))
+
+(declaim (inline %sdl::wcscmp))
 
 (cffi:defcfun ("SDL_wcscmp" %sdl::wcscmp)
               :int
               (%sdl::str1 (:pointer %sdl::wchar-t))
               (%sdl::str2 (:pointer %sdl::wchar-t)))
 
+(declaim (inline %sdl::wcsdup))
+
 (cffi:defcfun ("SDL_wcsdup" %sdl::wcsdup)
               (:pointer %sdl::wchar-t)
               (%sdl::wstr (:pointer %sdl::wchar-t)))
+
+(declaim (inline %sdl::wcslcat))
 
 (cffi:defcfun ("SDL_wcslcat" %sdl::wcslcat)
               %sdl::size-t
@@ -6403,15 +7847,21 @@
               (%sdl::src (:pointer %sdl::wchar-t))
               (%sdl::maxlen %sdl::size-t))
 
+(declaim (inline %sdl::wcslcpy))
+
 (cffi:defcfun ("SDL_wcslcpy" %sdl::wcslcpy)
               %sdl::size-t
               (%sdl::dst (:pointer %sdl::wchar-t))
               (%sdl::src (:pointer %sdl::wchar-t))
               (%sdl::maxlen %sdl::size-t))
 
+(declaim (inline %sdl::wcslen))
+
 (cffi:defcfun ("SDL_wcslen" %sdl::wcslen)
               %sdl::size-t
               (%sdl::wstr (:pointer %sdl::wchar-t)))
+
+(declaim (inline %sdl::wcsncasecmp))
 
 (cffi:defcfun ("SDL_wcsncasecmp" %sdl::wcsncasecmp)
               :int
@@ -6419,11 +7869,15 @@
               (%sdl::str2 (:pointer %sdl::wchar-t))
               (%sdl::len %sdl::size-t))
 
+(declaim (inline %sdl::wcsncmp))
+
 (cffi:defcfun ("SDL_wcsncmp" %sdl::wcsncmp)
               :int
               (%sdl::str1 (:pointer %sdl::wchar-t))
               (%sdl::str2 (:pointer %sdl::wchar-t))
               (%sdl::maxlen %sdl::size-t))
+
+(declaim (inline %sdl::wcsstr))
 
 (cffi:defcfun ("SDL_wcsstr" %sdl::wcsstr)
               (:pointer %sdl::wchar-t)
@@ -7072,17 +8526,25 @@
 
 (cffi:defctype %sdl::window-flags %sdl::|C:@EA@SDL-WINDOW-FLAGS|)
 
+(declaim (inline %sdl::swap16))
+
 (cffi:defcfun ("SDL_Swap16" %sdl::swap16)
               %sdl::uint16
               (%sdl::x %sdl::uint16))
+
+(declaim (inline %sdl::swap32))
 
 (cffi:defcfun ("SDL_Swap32" %sdl::swap32)
               %sdl::uint32
               (%sdl::x %sdl::uint32))
 
+(declaim (inline %sdl::swap64))
+
 (cffi:defcfun ("SDL_Swap64" %sdl::swap64)
               %sdl::uint64
               (%sdl::x %sdl::uint64))
+
+(declaim (inline %sdl::swap-float))
 
 (cffi:defcfun ("SDL_SwapFloat" %sdl::swap-float)
               :float
@@ -7094,14 +8556,20 @@
 
 (cffi:defctype %sdl::main-func (:pointer :pointer))
 
+(declaim (inline %sdl::point-in-rect))
+
 (cffi:defcfun ("SDL_PointInRect" %sdl::point-in-rect)
               %sdl::bool
               (%sdl::p (:pointer %sdl::point))
               (%sdl::r (:pointer %sdl::rect)))
 
+(declaim (inline %sdl::rect-empty))
+
 (cffi:defcfun ("SDL_RectEmpty" %sdl::rect-empty)
               %sdl::bool
               (%sdl::r (:pointer %sdl::rect)))
+
+(declaim (inline %sdl::rect-equals))
 
 (cffi:defcfun ("SDL_RectEquals" %sdl::rect-equals)
               %sdl::bool
