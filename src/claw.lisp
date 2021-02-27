@@ -15,7 +15,8 @@
                   (:exclude-definitions "SDL_memcpy4"
                                         "SDL_memset4")
                   (:include-definitions "^SDL\\w+"
-                                        "^WindowShapeMode$"))
+                                        "^WindowShapeMode$"
+                                        "^RW_SEEK.*"))
   :in-package :%sdl
   :trim-enum-prefix t
   :recognize-bitfields t
