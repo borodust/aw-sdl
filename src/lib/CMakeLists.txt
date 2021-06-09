@@ -4,6 +4,11 @@ project(sdl2.clawed)
 set(LIBRARY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/sdl)
 set(TARGET sdl2.clawed)
 
+set(CMAKE_SKIP_BUILD_RPATH FALSE)
+set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
+set(CMAKE_INSTALL_RPATH "$\{ORIGIN\}")
+
+
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 if (MSVC)
     add_compile_options(/O2)

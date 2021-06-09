@@ -67,6 +67,7 @@ function build_desktop {
           -DCMAKE_CXX_COMPILER=clang++ \
           $WORK_DIR
     cmake --build .
+    cp -L $BUILD_DIR/sdl/libSDL2-2.0.so.0 $BUILD_DIR/
 }
 
 
