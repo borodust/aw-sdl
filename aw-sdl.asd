@@ -1,13 +1,13 @@
-(asdf:defsystem :claw-sdl
+(asdf:defsystem :aw-sdl
   :description "Thin wrapper over SDL2"
   :version "1.0.0"
   :author "Pavel Korolev"
   :mailto "dev@borodust.org"
   :license "MIT"
-  :depends-on (:claw-sdl-bindings))
+  :depends-on (:aw-sdl-bindings))
 
 
-(asdf:defsystem :claw-sdl/wrapper
+(asdf:defsystem :aw-sdl/wrapper
   :description "Thin wrapper over SDL2"
   :version "1.0.0"
   :author "Pavel Korolev"
@@ -20,13 +20,13 @@
                (:module :sdl-includes :pathname "lib/sdl/include/")))
 
 
-(asdf:defsystem :claw-sdl/example
-  :description "claw-sdl example"
+(asdf:defsystem :aw-sdl/example
+  :description "aw-sdl example"
   :version "1.0.0"
   :author "Pavel Korolev"
   :mailto "dev@borodust.org"
   :license "MIT"
-  :depends-on (:alexandria :static-vectors :claw-sdl
+  :depends-on (:alexandria :static-vectors :aw-sdl
                            :claw :cffi-c-ref :trivial-main-thread)
   :pathname "example/"
   :components ((:file "example")))

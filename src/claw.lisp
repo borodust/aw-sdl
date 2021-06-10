@@ -1,15 +1,15 @@
 (uiop:define-package :sdl
   (:use :cl))
 
-(claw:defwrapper (:claw-sdl/wrapper
+(claw:defwrapper (:aw-sdl/wrapper
                   (:headers "SDL.h" "SDL_syswm.h")
                   (:includes :sdl-includes)
                   (:targets ((:and :x86-64 :linux) "x86_64-pc-linux-gnu"
                              (:headers "lib/SDL_platform.x86_64-pc-linux-gnu.h"))
                             ((:and :aarch64 :android) "aarch64-linux-android"
                              (:headers "lib/SDL_platform.aarch64-linux-android.h")))
-                  (:persistent :claw-sdl-bindings
-                   :asd-path "../claw-sdl-bindings.asd"
+                  (:persistent :aw-sdl-bindings
+                   :asd-path "../aw-sdl-bindings.asd"
                    :bindings-path "../bindings/"
                    :depends-on (:claw-utils))
                   (:exclude-definitions "SDL_memcpy4"
