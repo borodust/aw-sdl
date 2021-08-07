@@ -1,7 +1,8 @@
 (uiop:define-package :sdl
   (:use :cl))
 
-(claw:defwrapper (:aw-sdl/wrapper
+(claw:defwrapper (:aw-sdl
+                  (:system :aw-sdl/wrapper)
                   (:headers "SDL.h" "SDL_syswm.h")
                   (:includes :sdl-includes)
                   (:targets ((:and :x86-64 :linux) "x86_64-pc-linux-gnu"
