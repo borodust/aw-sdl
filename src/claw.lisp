@@ -5,10 +5,13 @@
                   (:system :aw-sdl/wrapper)
                   (:headers "SDL.h" "SDL_syswm.h")
                   (:includes :sdl-includes)
+                  (:defines "SDL_MAIN_HANDLED" 1)
                   (:targets ((:and :x86-64 :linux) "x86_64-pc-linux-gnu"
                              (:headers "lib/SDL_platform.x86_64-pc-linux-gnu.h"))
                             ((:and :aarch64 :android) "aarch64-linux-android"
-                             (:headers "lib/SDL_platform.aarch64-linux-android.h")))
+                             (:headers "lib/SDL_platform.aarch64-linux-android.h"))
+                            ((:and :x86-64 :windows) "x86_64-pc-windows-gnu"
+                             (:headers "lib/SDL_platform.x86_64-pc-windows-gnu.h")))
                   (:persistent :aw-sdl-bindings
                    :asd-path "../aw-sdl-bindings.asd"
                    :bindings-path "../bindings/"
