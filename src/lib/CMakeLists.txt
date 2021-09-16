@@ -35,7 +35,7 @@ set(ADAPTER "adapter.${TARGET_TRIPLE}.c")
 add_library(${TARGET} SHARED ${ADAPTER})
 
 target_include_directories(${TARGET}
-  PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../"
+  PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../../"
   PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/"
   PRIVATE "${LIBRARY_DIR}/")
 

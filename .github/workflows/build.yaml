@@ -18,7 +18,7 @@ jobs:
           version: "9.0"
       - name: Install Required Packages
         run: >-
-          sudo apt-get install -y
+          sudo apt-get update && sudo apt-get install -y
           libdbus-1-dev libibus-1.0-dev libudev-dev
           libegl1-mesa-dev libgl1-mesa-dev libgles2-mesa-dev
           libwayland-dev

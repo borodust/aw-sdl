@@ -65,6 +65,8 @@ function build_desktop {
     mkdir -p $BUILD_DIR && cd $BUILD_DIR
     cmake -DCMAKE_C_COMPILER=clang \
           -DCMAKE_CXX_COMPILER=clang++ \
+          -DSDL_STATIC=OFF \
+          -DSDL_SHARED=ON \
           $WORK_DIR
     cmake --build .
     cp -L $BUILD_DIR/sdl/libSDL2-2.0.so.0 $BUILD_DIR/

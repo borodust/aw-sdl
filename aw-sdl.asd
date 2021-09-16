@@ -14,10 +14,9 @@
   :mailto "dev@borodust.org"
   :license "MIT"
   :depends-on (:alexandria :uiop :cffi :claw-utils :claw)
-  :pathname "src/"
   :serial t
-  :components ((:file "claw")
-               (:module :sdl-includes :pathname "lib/sdl/include/")))
+  :components ((:file "src/claw")
+               (:module :sdl-includes :pathname "src/lib/sdl/include/")))
 
 
 (asdf:defsystem :aw-sdl/example

@@ -7,15 +7,12 @@
                   (:includes :sdl-includes)
                   (:defines "SDL_MAIN_HANDLED" 1)
                   (:targets ((:and :x86-64 :linux) "x86_64-pc-linux-gnu"
-                             (:headers "lib/SDL_platform.x86_64-pc-linux-gnu.h"))
+                             (:headers "src/lib/SDL_platform.x86_64-pc-linux-gnu.h"))
                             ((:and :aarch64 :android) "aarch64-linux-android"
-                             (:headers "lib/SDL_platform.aarch64-linux-android.h"))
+                             (:headers "src/lib/SDL_platform.aarch64-linux-android.h"))
                             ((:and :x86-64 :windows) "x86_64-pc-windows-gnu"
-                             (:headers "lib/SDL_platform.x86_64-pc-windows-gnu.h")))
-                  (:persistent :aw-sdl-bindings
-                   :asd-path "../aw-sdl-bindings.asd"
-                   :bindings-path "../bindings/"
-                   :depends-on (:claw-utils))
+                             (:headers "src/lib/SDL_platform.x86_64-pc-windows-gnu.h")))
+                  (:persistent t :depends-on (:claw-utils))
                   (:exclude-definitions "SDL_memcpy4"
                                         "SDL_memset4")
                   (:include-definitions "^SDL\\w+"
@@ -26,7 +23,7 @@
   :recognize-bitfields t
   :recognize-strings t
   :with-adapter (:static
-                 :path "lib/adapter.c")
+                 :path "src/lib/adapter.c")
   :override-types ((:string claw-utils:claw-string)
                    (:pointer claw-utils:claw-pointer))
   :symbolicate-names (:in-pipeline
