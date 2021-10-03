@@ -13,11 +13,13 @@
                             ((:and :x86-64 :windows) "x86_64-pc-windows-gnu"
                              (:headers "src/lib/SDL_platform.x86_64-pc-windows-gnu.h")))
                   (:persistent t :depends-on (:claw-utils))
-                  (:exclude-definitions "SDL_memcpy4"
-                                        "SDL_memset4")
                   (:include-definitions "^SDL\\w+"
                                         "^WindowShapeMode$"
-                                        "^RW_SEEK.*"))
+                                        "^RW_SEEK.*")
+                  (:exclude-definitions "SDL_memcpy4"
+                                        "SDL_memset4"
+                                        "SDL_NUM_"
+                                        "_h_$"))
   :in-package :%sdl
   :trim-enum-prefix t
   :recognize-bitfields t
