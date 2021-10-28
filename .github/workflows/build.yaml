@@ -55,7 +55,7 @@ jobs:
         id: vars
         run: >-
           export RELEASE_VERSION=${GITHUB_REF#refs/*/} &&
-          echo ::set-output name=runtime_binary::libsdl2.clawed-windows-x64-$RELEASE_VERSION.dll
+          echo ::set-output name=runtime_binary::sdl2.clawed-windows-x64-$RELEASE_VERSION.dll
         shell: bash
       - name: Build Binaries
         run: |
@@ -119,5 +119,5 @@ jobs:
         with:
           files: |
             ${{ steps.vars.outputs.runtime_binary }}
-            src/lib/build/desktop/sdl/libSDL2.so
-            src/lib/build/desktop/sdl/libhidapi.so
+            src/lib/build/android/sdl/libSDL2.so
+            src/lib/build/android/sdl/libhidapi.so
