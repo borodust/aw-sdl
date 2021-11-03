@@ -3,7 +3,7 @@
 WORK_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 LIBRARY_DIR=$WORK_DIR/sdl/
-RELEASE_MODE="MinSizeRel"
+BUILD_TYPE="MinSizeRel"
 
 REST_ARGS=
 while [[ $# -gt 0 ]]
@@ -21,7 +21,7 @@ case $key in
         shift
         ;;
     --debug)
-        RELEASE_MODE="Debug"
+        BUILD_TYPE="Debug"
         shift
         ;;
     *)
@@ -62,6 +62,8 @@ function build_android {
           -DANDROID_ABI=$ANDROID_ABI \
           -DANDROID_ARM_NEON=ON \
           -DCMAKE_TOOLCHAIN_FILE="$NDK/build/cmake/android.toolchain.cmake" \
+          -DSDL_STATIC=OFF \
+          -DSDL_SHARED=ON \
           $WORK_DIR
     cmake --build . --config "$BUILD_TYPE"
     cp -L $BUILD_DIR/sdl/libSDL2.so $BUILD_DIR/sdl/libhidapi.so $BUILD_DIR/

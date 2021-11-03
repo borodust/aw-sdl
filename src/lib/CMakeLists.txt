@@ -22,7 +22,6 @@ else()
       add_compile_options(-mavx)
     else()
       set(TARGET_TRIPLE aarch64-linux-android)
-      add_compile_options(-mfpu=neon)
     endif()
 endif()
 
@@ -32,7 +31,7 @@ add_subdirectory("${LIBRARY_DIR}")
 # MAIN
 #
 set(ADAPTER "adapter.${TARGET_TRIPLE}.c")
-add_library(${TARGET} SHARED ${ADAPTER})
+add_library(${TARGET} SHARED ${ADAPTER} ${EXTRA_SOURCES})
 
 target_include_directories(${TARGET}
   PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../../"
