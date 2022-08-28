@@ -120,4 +120,3 @@ jobs:
           files: |
             ${{ steps.vars.outputs.runtime_binary }}
             src/lib/build/android/sdl/libSDL2.so
-            src/lib/build/android/sdl/libhidapi.so
