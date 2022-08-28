@@ -7,11 +7,11 @@
                   (:includes :sdl-includes)
                   (:defines "SDL_MAIN_HANDLED" 1)
                   (:targets ((:and :x86-64 :linux) "x86_64-pc-linux-gnu"
-                             (:headers "src/lib/SDL_platform.x86_64-pc-linux-gnu.h"))
+                             (:headers "src/lib/SDL_config.x86_64-pc-linux-gnu.h"))
                             ((:and :aarch64 :android) "aarch64-linux-android"
-                             (:headers "src/lib/SDL_platform.aarch64-linux-android.h"))
+                             (:headers "src/lib/SDL_config.aarch64-linux-android.h"))
                             ((:and :x86-64 :windows) "x86_64-w64-mingw32"
-                             (:headers "src/lib/SDL_platform.x86_64-w64-mingw32.h")))
+                             (:headers "src/lib/SDL_config.x86_64-w64-mingw32.h")))
                   (:persistent t :depends-on (:claw-utils))
                   (:include-definitions "^SDL\\w+"
                                         "^WindowShapeMode$"

@@ -66,7 +66,7 @@ function build_android {
           -DSDL_SHARED=ON \
           $WORK_DIR
     cmake --build . --config "$BUILD_TYPE"
-    cp -L $BUILD_DIR/sdl/libSDL2.so $BUILD_DIR/sdl/libhidapi.so $BUILD_DIR/
+    cp -L $BUILD_DIR/sdl/libSDL2.so $BUILD_DIR/
 }
 
 function build_desktop {
