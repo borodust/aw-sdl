@@ -5,7 +5,7 @@ on:
       - "v*.*.*"
 jobs:
   build-linux:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     steps:
       - name: Check Out Everything
         id: checkout
@@ -74,7 +74,7 @@ jobs:
             ${{ steps.vars.outputs.runtime_binary }}
             src/lib/build/desktop/SDL2.dll
   build-android:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     steps:
       - name: Check Out Everything
         id: checkout
